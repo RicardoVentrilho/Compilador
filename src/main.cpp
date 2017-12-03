@@ -1,4 +1,4 @@
-#include "telaprincipal.h"
+#include "tela/telaprincipal.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

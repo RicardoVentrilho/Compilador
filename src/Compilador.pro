@@ -13,8 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        telaprincipal.cpp
+    tela/telaprincipal.cpp
 
-HEADERS  += telaprincipal.h
+HEADERS  += tela/telaprincipal.h
 
-FORMS    += telaprincipal.ui
+FORMS    +=
+
+DISTFILES +=
+
+RESOURCES += \
+    recursos.qrc
