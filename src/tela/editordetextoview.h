@@ -6,7 +6,6 @@
 using namespace controladores;
 
 class QAction;
-class crie_acao_novo_arquivo;
 class QPlainTextEdit;
 
 class EditorDeTextoView : public QMainWindow
@@ -17,11 +16,11 @@ public:
     EditorDeTextoView();
     void carregueArquivo(const QString &nomeDoArquivo);
 
-    void crieMenuComAcoesDeEditar();
-
 protected:
     void aoFechar(QCloseEvent *event);
     void criMenuComAcoesDeArquivo();
+    void crieMenuComAcoesDeEditar();
+    void crieMenuComAcoesDeCompilar();
 
 private slots:
     void crieArquivo();
@@ -30,6 +29,7 @@ private slots:
     bool salveComo();
     void sobre();
     void arquivoFoiModificado();
+    void compile();
 
 private:
     const int ALTURA_RESULTADO_DA_COMPILACAO = 100;
@@ -43,8 +43,7 @@ private:
     void setArquivoAtual(const QString &nomeDoArquivo);
     void monteLayout();
 
-    ////TODO: Refatorar nome abaixo
-    QString strippedName(const QString &nomeCompletoDoArquivo);
+    QString nomeSimplificado(const QString &nomeCompletoDoArquivo);
 
     QPlainTextEdit *campoTexto, *resultadoDaCompilacao;
     QString arquivoAtual;

@@ -74,13 +74,17 @@ bool EditorDeTextoView::salveComo()
 
 void EditorDeTextoView::sobre()
 {
-   QMessageBox::about(this, tr("Sobre este compilador!"),
-                            tr("<b>Compilador</b> que traduz Portugol para C."));
+    controlador->sobre();
 }
 
 void EditorDeTextoView::arquivoFoiModificado()
 {
     setWindowModified(campoTexto->document()->isModified());
+}
+
+void EditorDeTextoView::compile()
+{
+    controlador->compile();
 }
 
 void EditorDeTextoView::criMenuComAcoesDeArquivo()
@@ -128,28 +132,29 @@ void EditorDeTextoView::crieMenuComAcoesDeEditar()
     controlador->adicioneSeparador(menuEditar);
 }
 
+void EditorDeTextoView::crieMenuComAcoesDeCompilar()
+{
+    QMenu *menuCompilar = menuBar()->addMenu(tr("Ferramentas"));
+    QToolBar *menuCompilarToolBar = addToolBar(tr("Compilar"));
+
+    auto acaoCompilar = controlador->crieMenuCompilar(menuCompilar, menuCompilarToolBar);
+
+    connect(acaoCompilar, &QAction::triggered, this, &EditorDeTextoView::compile);
+
+    controlador->adicioneSeparador(menuCompilar);
+}
+
 void EditorDeTextoView::crieMenuComAcoes()
 {
     criMenuComAcoesDeArquivo();
 
     crieMenuComAcoesDeEditar();
 
-    //Compilador
-    QMenu *compilador_menu = menuBar()->addMenu(tr("Ferramentas"));
-    QToolBar *tool_bar_compilador = addToolBar(tr("Compilar"));
+    crieMenuComAcoesDeCompilar();
 
-    const QIcon icone_compilar = QIcon::fromTheme("document-save", QIcon(":/imagens/build.png"));
-    QAction *acao_compilar = new QAction(icone_compilar, tr("Compilar"), this);
+    QMenu *menuSobre = menuBar()->addMenu(tr("Ajuda"));
 
-    compilador_menu->addAction(acao_compilar);
-    tool_bar_compilador->addAction(acao_compilar);
-
-    //Help
-    QMenu *helpMenu = menuBar()->addMenu(tr("Ajuda"));
-    QAction *aboutAct = helpMenu->addAction(tr("Sobre"), this, &EditorDeTextoView::sobre);
-    aboutAct->setStatusTip(tr("Show the application's About box"));
-
-
+    controlador->crieMenuSobre(menuSobre);
 }
 
 void EditorDeTextoView::crieBarraDeStatus()
@@ -157,6 +162,7 @@ void EditorDeTextoView::crieBarraDeStatus()
     QStatusBar* barraDeStatus = statusBar();
 
     controlador->setBarraDeStatus(barraDeStatus);
+
     controlador->mostreMensagemNaBarraDeStatus(tr("Aberto..."));
 }
 
@@ -194,7 +200,9 @@ void EditorDeTextoView::setArquivoAtual(const QString &nomeDoArquivo)
     controlador->setArquivoAtual(nomeDoArquivo);
 }
 
-QString EditorDeTextoView::strippedName(const QString &nomeCompletoDoArquivo)
+QString EditorDeTextoView::nomeSimplificado(const QString &nomeCompletoDoArquivo)
 {
-    return QFileInfo(nomeCompletoDoArquivo).fileName();
+    auto nomeSimplificado = controlador->nomeSimplificado(nomeCompletoDoArquivo);
+
+    return nomeSimplificado;
 }

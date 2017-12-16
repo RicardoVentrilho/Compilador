@@ -26,6 +26,8 @@ public:
 
     void aoFechar(QCloseEvent *event);
 
+    void compile();
+    void sobre();
     void abra();
     void definaConfiguracoes();
     void leiaConfiguracoes();
@@ -34,6 +36,7 @@ public:
     void carregueArquivo(const QString &nomeDoArquivo);
     void setArquivoAtual(const QString &nomeDoArquivo);
     void crieArquivo();
+    QString nomeSimplificado(const QString &nomeCompletoDoArquivo);
 
     bool salveArquivo(const QString &nomeDoArquivo);
     bool talvezSalve();
@@ -41,6 +44,7 @@ public:
     bool salveComo();
 
     void adicioneSeparador(QMenu* menu);
+    void crieMenuSobre(QMenu* menuSobre);
     QAction *crieMenuNovo(QMenu* menuArquivo, QToolBar* menuToolBar);
     QAction *crieMenuAbrir(QMenu* menuArquivo, QToolBar* menuToolBar);
     QAction *crieMenuSalvar(QMenu* menuArquivo, QToolBar* menuToolBar);
@@ -49,6 +53,7 @@ public:
     QAction *crieMenuRecortar(QMenu *menuEditar, QToolBar *menuToolBar);
     QAction *crieMenuCopiar(QMenu *menuEditar, QToolBar *menuToolBar);
     QAction *crieMenuColar(QMenu *menuEditar, QToolBar *menuToolBar);
+    QAction *crieMenuCompilar(QMenu *menuCompilar, QToolBar *menuCompilarToolBar);
 
 private:
     QStatusBar* barraDeStatus;
