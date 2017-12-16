@@ -1,6 +1,11 @@
 #include "editordetextocontroller.h"
 
-controladores::EditorDeTextoController::EditorDeTextoController()
+controladores::EditorDeTextoController::EditorDeTextoController(QWidget* editorDeTextoView,
+                                                                QPlainTextEdit* campoTexto,
+                                                                QString arquivoAtual)
+    : editorDeTextoView(editorDeTextoView),
+      arquivoAtual(arquivoAtual),
+      campoTexto(campoTexto)
 {
 }
 
@@ -9,33 +14,54 @@ void controladores::EditorDeTextoController::setBarraDeStatus(QStatusBar* barraD
     this->barraDeStatus = barraDeStatus;
 }
 
-void controladores::EditorDeTextoController::mostreMensagemNaBarraDeStatus(const QString mensagem, int timeOut = 0)
+void controladores::EditorDeTextoController::mostreMensagemNaBarraDeStatus(QString mensagem, int timeOut)
 {
     barraDeStatus->showMessage(mensagem, timeOut);
 }
 
 void controladores::EditorDeTextoController::carregueArquivo(const QString &nomeDoArquivo)
 {
-
     ////TODO: Refatorar essa parte abaixo
-    QFile file(nomeDoArquivo);
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        QMessageBox::warning(this, tr("Application"),
-                             tr("Cannot read file %1:\n%2.")
-                             .arg(QDir::toNativeSeparators(nomeDoArquivo), file.errorString()));
+    QFile arquivo(nomeDoArquivo);
+    if (!arquivo.open(QFile::ReadOnly | QFile::Text))
+    {
+
+        auto mensagem = QString("Não pode ler o aquivo " +
+                                QDir::toNativeSeparators(nomeDoArquivo) +
+                                ":\n" + arquivo.errorString() + ".");
+
+        QMessageBox::warning(editorDeTextoView, QString("Aplicação"), mensagem);
         return;
     }
 
-    QTextStream in(&file);
+    QTextStream in(&arquivo);
+
 #ifndef QT_NO_CURSOR
     QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
-    editorDeTexto->setPlainText(in.readAll());
+    campoTexto->setPlainText(in.readAll());
 #ifndef QT_NO_CURSOR
     QApplication::restoreOverrideCursor();
 #endif
 
-    setArquivoAberto(nomeDoArquivo);
+    setArquivoAtual(nomeDoArquivo);
 
     mostreMensagemNaBarraDeStatus(QString("File loaded"), 2000);
+}
+
+void controladores::EditorDeTextoController::setArquivoAtual(const QString &nomeDoArquivo)
+{
+    arquivoAtual = nomeDoArquivo;
+    campoTexto->document()->setModified(false);
+
+    editorDeTextoView->setWindowModified(false);
+
+    QString titulo = arquivoAtual;
+
+    if (arquivoAtual.isEmpty())
+    {
+        titulo = "sem-titulo.txt";
+    }
+
+    editorDeTextoView->setWindowFilePath(titulo);
 }

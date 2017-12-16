@@ -3,6 +3,12 @@
 
 #include <QMainWindow>
 #include <QStatusBar>
+#include <QFile>
+#include <QMessageBox>
+#include <QDir>
+#include <QTextStream>
+#include <QPlainTextEdit>
+#include <QApplication>
 
 namespace controladores
 {
@@ -10,14 +16,18 @@ namespace controladores
 class EditorDeTextoController
 {
 public:
-    EditorDeTextoController();
+    EditorDeTextoController(QWidget* editorDeTextoView, QPlainTextEdit* campoTexto, QString arquivoAtual = QString());
 
     void setBarraDeStatus(QStatusBar *barraDeStatus);
-    void mostreMensagemNaBarraDeStatus(const QString mensagem, int timeOut);
+    void mostreMensagemNaBarraDeStatus(QString mensagem, int timeOut = 0);
     void carregueArquivo(const QString &nomeDoArquivo);
+    void setArquivoAtual(const QString &nomeDoArquivo);
 
 private:
     QStatusBar* barraDeStatus;
+    QWidget* editorDeTextoView;
+    QString arquivoAtual;
+    QPlainTextEdit* campoTexto;
 };
 
 }

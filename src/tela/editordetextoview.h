@@ -37,13 +37,13 @@ private:
     void escrevaConfiguracoes();
     bool talvezSalve();
     bool salveArquivo(const QString &nome_do_arquivo);
-    void setArquivoAberto(const QString &nome_do_arquivo);
+    void setArquivoAtual(const QString &nome_do_arquivo);
 
     ////TODO: Refatorar nome abaixo.
     QString strippedName(const QString &nome_completo_do_arquivo);
 
-    QPlainTextEdit *editorDeTexto, *resultadoDaCompilacao;
-    QString arquivo_aberto;
+    QPlainTextEdit *campoTexto, *resultadoDaCompilacao;
+    QString arquivoAtual;
     void monteLayout();
     void crie_botao_novo(QMenu *menu_arquivo, QToolBar *toolbar_menu);
 

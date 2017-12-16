@@ -3,28 +3,31 @@
 #include "editordetextoview.h"
 
 EditorDeTextoView::EditorDeTextoView()
-    : editorDeTexto(new QPlainTextEdit),
+    : campoTexto(new QPlainTextEdit),
       resultadoDaCompilacao(new QPlainTextEdit())
 {
-    controlador = new EditorDeTextoController();
-
     monteLayout();
+
+    controlador = new EditorDeTextoController(this, campoTexto, arquivoAtual);
 
     crieAcoes();
     crieBarraDeStatus();
 
     leiaConfiguracoes();
 
-    connect(editorDeTexto->document(), &QTextDocument::contentsChanged, this, &EditorDeTextoView::documento_foi_modificado);
+    connect(campoTexto->document(),
+            &QTextDocument::contentsChanged,
+            this,
+            &EditorDeTextoView::documento_foi_modificado);
 
-    setArquivoAberto(QString());
+    setArquivoAtual(QString());
     setUnifiedTitleAndToolBarOnMac(true);
 }
 
 void EditorDeTextoView::monteLayout()
 {
     auto layout = new QVBoxLayout();
-    layout->addWidget(editorDeTexto);
+    layout->addWidget(campoTexto);
 
     resultadoDaCompilacao->setMinimumHeight(ALTURA_RESULTADO_DA_COMPILACAO);
     resultadoDaCompilacao->setMaximumHeight(ALTURA_RESULTADO_DA_COMPILACAO);
@@ -51,8 +54,8 @@ void EditorDeTextoView::ao_fechar(QCloseEvent *event)
 void EditorDeTextoView::crie_arquivo()
 {
     if (talvezSalve()) {
-        editorDeTexto->clear();
-        setArquivoAberto(QString());
+        campoTexto->clear();
+        setArquivoAtual(QString());
     }
 }
 
@@ -67,10 +70,10 @@ void EditorDeTextoView::abra()
 
 bool EditorDeTextoView::salve()
 {
-    if (arquivo_aberto.isEmpty()) {
+    if (arquivoAtual.isEmpty()) {
         return salve_como();
     } else {
-        return salveArquivo(arquivo_aberto);
+        return salveArquivo(arquivoAtual);
     }
 }
 
@@ -92,7 +95,7 @@ void EditorDeTextoView::sobre()
 
 void EditorDeTextoView::documento_foi_modificado()
 {
-    setWindowModified(editorDeTexto->document()->isModified());
+    setWindowModified(campoTexto->document()->isModified());
 }
 
 void EditorDeTextoView::crie_botao_novo(QMenu *menu_arquivo, QToolBar *toolbar_menu)
@@ -164,7 +167,7 @@ void EditorDeTextoView::crieAcoes()
     cutAct->setShortcuts(QKeySequence::Cut);
     cutAct->setStatusTip(tr("Cut the current selection's contents to the "
                             "clipboard"));
-    connect(cutAct, &QAction::triggered, editorDeTexto, &QPlainTextEdit::cut);
+    connect(cutAct, &QAction::triggered, campoTexto, &QPlainTextEdit::cut);
     editMenu->addAction(cutAct);
     editToolBar->addAction(cutAct);
 
@@ -174,7 +177,7 @@ void EditorDeTextoView::crieAcoes()
     ////TODO: Refatorar essa parte abaixo
     copyAct->setStatusTip(tr("Copy the current selection's contents to the "
                              "clipboard"));
-    connect(copyAct, &QAction::triggered, editorDeTexto, &QPlainTextEdit::copy);
+    connect(copyAct, &QAction::triggered, campoTexto, &QPlainTextEdit::copy);
     editMenu->addAction(copyAct);
     editToolBar->addAction(copyAct);
 
@@ -184,7 +187,7 @@ void EditorDeTextoView::crieAcoes()
     ////TODO: Refatorar essa parte abaixo
     pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
                               "selection"));
-    connect(pasteAct, &QAction::triggered, editorDeTexto, &QPlainTextEdit::paste);
+    connect(pasteAct, &QAction::triggered, campoTexto, &QPlainTextEdit::paste);
     editMenu->addAction(pasteAct);
     editToolBar->addAction(pasteAct);
 
@@ -213,8 +216,8 @@ void EditorDeTextoView::crieAcoes()
 
     cutAct->setEnabled(false);
     copyAct->setEnabled(false);
-    connect(editorDeTexto, &QPlainTextEdit::copyAvailable, cutAct, &QAction::setEnabled);
-    connect(editorDeTexto, &QPlainTextEdit::copyAvailable, copyAct, &QAction::setEnabled);
+    connect(campoTexto, &QPlainTextEdit::copyAvailable, cutAct, &QAction::setEnabled);
+    connect(campoTexto, &QPlainTextEdit::copyAvailable, copyAct, &QAction::setEnabled);
 #endif // !QT_NO_CLIPBOARD
 }
 
@@ -249,7 +252,7 @@ void EditorDeTextoView::escrevaConfiguracoes()
 bool EditorDeTextoView::talvezSalve()
 {
     ////TODO: Refatorar essa parte abaixo
-    if (!editorDeTexto->document()->isModified())
+    if (!campoTexto->document()->isModified())
         return true;
     const QMessageBox::StandardButton ret
         = QMessageBox::warning(this, tr("Application"),
@@ -289,30 +292,19 @@ bool EditorDeTextoView::salveArquivo(const QString &nome_do_arquivo)
 #ifndef QT_NO_CURSOR
     QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
-    out << editorDeTexto->toPlainText();
+    out << campoTexto->toPlainText();
 #ifndef QT_NO_CURSOR
     QApplication::restoreOverrideCursor();
 #endif
 
-    setArquivoAberto(nome_do_arquivo);
+    setArquivoAtual(nome_do_arquivo);
     statusBar()->showMessage(tr("File saved"), 2000);
     return true;
 }
 
-void EditorDeTextoView::setArquivoAberto(const QString &nome_do_arquivo)
+void EditorDeTextoView::setArquivoAtual(const QString &nomeDoArquivo)
 {
-    arquivo_aberto = nome_do_arquivo;
-    editorDeTexto->document()->setModified(false);
-
-    setWindowModified(false);
-
-    QString shownName = arquivo_aberto;
-    if (arquivo_aberto.isEmpty())
-    {
-        shownName = "sem-titulo.txt";
-    }
-
-    setWindowFilePath(shownName);
+    controlador->setArquivoAtual(nomeDoArquivo);
 }
 
 QString EditorDeTextoView::strippedName(const QString &nome_completo_do_arquivo)
