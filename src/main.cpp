@@ -1,6 +1,8 @@
 #include "tela/editordetextoview.h"
 #include <QApplication>
 
+using tela::EditorDeTextoView;
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

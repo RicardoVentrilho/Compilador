@@ -2,7 +2,7 @@
 
 #include "editordetextoview.h"
 
-EditorDeTextoView::EditorDeTextoView()
+tela::EditorDeTextoView::EditorDeTextoView()
     : campoTexto(new QPlainTextEdit),
       resultadoDaCompilacao(new QPlainTextEdit())
 {
@@ -19,14 +19,14 @@ EditorDeTextoView::EditorDeTextoView()
     connect(campoTexto->document(),
             &QTextDocument::contentsChanged,
             this,
-            &EditorDeTextoView::arquivoFoiModificado);
+            &tela::EditorDeTextoView::arquivoFoiModificado);
 
     setArquivoAtual(QString());
 
     setUnifiedTitleAndToolBarOnMac(true);
 }
 
-void EditorDeTextoView::monteLayout()
+void tela::EditorDeTextoView::monteLayout()
 {
     auto layout = new QVBoxLayout();
     layout->addWidget(campoTexto);
@@ -43,74 +43,76 @@ void EditorDeTextoView::monteLayout()
     centralWidget()->setLayout(layout);
 }
 
-void EditorDeTextoView::aoFechar(QCloseEvent *event)
+void tela::EditorDeTextoView::aoFechar(QCloseEvent *event)
 {
     controlador->aoFechar(event);
 }
 
-void EditorDeTextoView::crieArquivo()
+void tela::EditorDeTextoView::crieArquivo()
 {
     controlador->crieArquivo();
 }
 
-void EditorDeTextoView::abra()
+void tela::EditorDeTextoView::abra()
 {
     controlador->abra();
 }
 
-bool EditorDeTextoView::salve()
+bool tela::EditorDeTextoView::salve()
 {
     auto arquivoSalvo = controlador->salve();
 
     return arquivoSalvo;
 }
 
-bool EditorDeTextoView::salveComo()
+bool tela::EditorDeTextoView::salveComo()
 {
     auto arquivoSalvo = controlador->salveComo();
 
     return arquivoSalvo;
 }
 
-void EditorDeTextoView::sobre()
+void tela::EditorDeTextoView::sobre()
 {
     controlador->sobre();
 }
 
-void EditorDeTextoView::arquivoFoiModificado()
+void tela::EditorDeTextoView::arquivoFoiModificado()
 {
     setWindowModified(campoTexto->document()->isModified());
 }
 
-void EditorDeTextoView::compile()
+void tela::EditorDeTextoView::compile()
 {
-    controlador->compile();
+    auto texto = campoTexto->toPlainText();
+
+    controlador->compile(texto);
 }
 
-void EditorDeTextoView::criMenuComAcoesDeArquivo()
+void tela::EditorDeTextoView::criMenuComAcoesDeArquivo()
 {
     QMenu *menuArquivo = menuBar()->addMenu(tr("&Arquivo"));
     QToolBar *menuArquivoToolBar = addToolBar(tr("Arquivo"));
 
     auto acaoNovo = controlador->crieMenuNovo(menuArquivo, menuArquivoToolBar);
-    connect(acaoNovo, &QAction::triggered, this, &EditorDeTextoView::crieArquivo);
+    connect(acaoNovo, &QAction::triggered, this, &tela::EditorDeTextoView::crieArquivo);
 
     auto acaoAbrir = controlador->crieMenuAbrir(menuArquivo, menuArquivoToolBar);
-    connect(acaoAbrir, &QAction::triggered, this, &EditorDeTextoView::abra);
+    connect(acaoAbrir, &QAction::triggered, this, &tela::EditorDeTextoView::abra);
 
 //    auto acaoFechar = controlador->crieMenuFechar(menuArquivo);
-//    connect(acaoFechar, &QAction::triggered, this, &EditorDeTextoView::aoFechar);
+//    connect(acaoFechar, &QAction::triggered, this, &tela::EditorDeTextoView::aoFechar);
 
     auto acaoSalvar = controlador->crieMenuSalvar(menuArquivo, menuArquivoToolBar);
-    connect(acaoSalvar, &QAction::triggered, this, &EditorDeTextoView::salve);
+    connect(acaoSalvar, &QAction::triggered, this, &tela::EditorDeTextoView::salve);
 
 //    auto acaoSalvarComo = controlador->crieMenuSalvarComo(menuArquivo);
-//    connect(acaoSalvarComo, &QAction::triggered, this, &EditorDeTextoView::salve);
+//    connect(acaoSalvarComo, &QAction::triggered, this, &tela::EditorDeTextoView::salve);
 
     controlador->adicioneSeparador(menuArquivo);
 }
 
-void EditorDeTextoView::crieMenuComAcoesDeEditar()
+void tela::EditorDeTextoView::crieMenuComAcoesDeEditar()
 {
     QMenu *menuEditar = menuBar()->addMenu(tr("Editar"));
     QToolBar *menuEditarToolBar = addToolBar(tr("Editar"));
@@ -132,19 +134,19 @@ void EditorDeTextoView::crieMenuComAcoesDeEditar()
     controlador->adicioneSeparador(menuEditar);
 }
 
-void EditorDeTextoView::crieMenuComAcoesDeCompilar()
+void tela::EditorDeTextoView::crieMenuComAcoesDeCompilar()
 {
     QMenu *menuCompilar = menuBar()->addMenu(tr("Ferramentas"));
     QToolBar *menuCompilarToolBar = addToolBar(tr("Compilar"));
 
     auto acaoCompilar = controlador->crieMenuCompilar(menuCompilar, menuCompilarToolBar);
 
-    connect(acaoCompilar, &QAction::triggered, this, &EditorDeTextoView::compile);
+    connect(acaoCompilar, &QAction::triggered, this, &tela::EditorDeTextoView::compile);
 
     controlador->adicioneSeparador(menuCompilar);
 }
 
-void EditorDeTextoView::crieMenuComAcoes()
+void tela::EditorDeTextoView::crieMenuComAcoes()
 {
     criMenuComAcoesDeArquivo();
 
@@ -157,7 +159,7 @@ void EditorDeTextoView::crieMenuComAcoes()
     controlador->crieMenuSobre(menuSobre);
 }
 
-void EditorDeTextoView::crieBarraDeStatus()
+void tela::EditorDeTextoView::crieBarraDeStatus()
 {
     QStatusBar* barraDeStatus = statusBar();
 
@@ -166,41 +168,41 @@ void EditorDeTextoView::crieBarraDeStatus()
     controlador->mostreMensagemNaBarraDeStatus(tr("Aberto..."));
 }
 
-void EditorDeTextoView::leiaConfiguracoes()
+void tela::EditorDeTextoView::leiaConfiguracoes()
 {
     controlador->leiaConfiguracoes();
 }
 
-void EditorDeTextoView::definaConfiguracoes()
+void tela::EditorDeTextoView::definaConfiguracoes()
 {
     controlador->definaConfiguracoes();
 }
 
-bool EditorDeTextoView::talvezSalve()
+bool tela::EditorDeTextoView::talvezSalve()
 {
     auto arquivoSalvo = controlador->talvezSalve();
 
     return arquivoSalvo;
 }
 
-void EditorDeTextoView::carregueArquivo(const QString &nomeDoArquivo)
+void tela::EditorDeTextoView::carregueArquivo(const QString &nomeDoArquivo)
 {
     controlador->carregueArquivo(nomeDoArquivo);
 }
 
-bool EditorDeTextoView::salveArquivo(const QString &nomeDoArquivo)
+bool tela::EditorDeTextoView::salveArquivo(const QString &nomeDoArquivo)
 {
     auto arquivoSalvo = controlador->salveArquivo(nomeDoArquivo);
 
     return arquivoSalvo;
 }
 
-void EditorDeTextoView::setArquivoAtual(const QString &nomeDoArquivo)
+void tela::EditorDeTextoView::setArquivoAtual(const QString &nomeDoArquivo)
 {
     controlador->setArquivoAtual(nomeDoArquivo);
 }
 
-QString EditorDeTextoView::nomeSimplificado(const QString &nomeCompletoDoArquivo)
+QString tela::EditorDeTextoView::nomeSimplificado(const QString &nomeCompletoDoArquivo)
 {
     auto nomeSimplificado = controlador->nomeSimplificado(nomeCompletoDoArquivo);
 

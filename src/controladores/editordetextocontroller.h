@@ -1,6 +1,7 @@
 #ifndef EDITORDETEXTOCONTROLLER_H
 #define EDITORDETEXTOCONTROLLER_H
 
+#include <iostream>
 #include <QMainWindow>
 #include <QStatusBar>
 #include <QFile>
@@ -16,6 +17,9 @@
 #include <QApplication>
 #include <QToolBar>
 
+using std::cout;
+using std::endl;
+
 namespace controladores
 {
 
@@ -27,7 +31,7 @@ public:
 
     void aoFechar(QCloseEvent *event);
 
-    void compile();
+    void compile(QString texto);
     void sobre();
     void abra();
     void definaConfiguracoes();

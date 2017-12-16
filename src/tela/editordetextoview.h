@@ -3,11 +3,13 @@
 
 #include "controladores/editordetextocontroller.h"
 
-using namespace controladores;
+using controladores::EditorDeTextoController;
 
 class QAction;
 class QPlainTextEdit;
 
+namespace tela
+{
 class EditorDeTextoView : public QMainWindow
 {
     Q_OBJECT
@@ -50,5 +52,6 @@ private:
 
     EditorDeTextoController* controlador;
 };
+}
 
 #endif

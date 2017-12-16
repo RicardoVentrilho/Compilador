@@ -26,8 +26,10 @@ void controladores::EditorDeTextoController::aoFechar(QCloseEvent *event)
     }
 }
 
-void controladores::EditorDeTextoController::compile()
+void controladores::EditorDeTextoController::compile(QString texto)
 {
+    cout << texto.toStdString() << endl;
+
     QMessageBox::about(editorDeTextoView,
                        QString("Sobre este compilador!"),
                        QString("Compilador em desenvolvimento..."));
