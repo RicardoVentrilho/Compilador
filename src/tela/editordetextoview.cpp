@@ -11,9 +11,7 @@ tela::EditorDeTextoView::EditorDeTextoView()
     controlador = new EditorDeTextoController(this, campoTexto, arquivoAtual);
 
     crieMenuComAcoes();
-
     crieBarraDeStatus();
-
     leiaConfiguracoes();
 
     connect(campoTexto->document(),
@@ -22,8 +20,14 @@ tela::EditorDeTextoView::EditorDeTextoView()
             &tela::EditorDeTextoView::arquivoFoiModificado);
 
     setArquivoAtual(QString());
-
     setUnifiedTitleAndToolBarOnMac(true);
+}
+
+tela::EditorDeTextoView::~EditorDeTextoView()
+{
+    delete campoTexto;
+    delete resultadoDaCompilacao;
+    delete controlador;
 }
 
 void tela::EditorDeTextoView::monteLayout()

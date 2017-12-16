@@ -5,9 +5,6 @@
 
 using controladores::EditorDeTextoController;
 
-class QAction;
-class QPlainTextEdit;
-
 namespace tela
 {
 class EditorDeTextoView : public QMainWindow
@@ -16,6 +13,8 @@ class EditorDeTextoView : public QMainWindow
 
 public:
     EditorDeTextoView();
+    ~EditorDeTextoView();
+
     void carregueArquivo(const QString &nomeDoArquivo);
 
 protected:
