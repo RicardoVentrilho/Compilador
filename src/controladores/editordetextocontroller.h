@@ -23,6 +23,8 @@ public:
     void carregueArquivo(const QString &nomeDoArquivo);
     void setArquivoAtual(const QString &nomeDoArquivo);
 
+    bool salveArquivo(const QString &nomeDoArquivo);
+
 private:
     QStatusBar* barraDeStatus;
     QWidget* editorDeTextoView;

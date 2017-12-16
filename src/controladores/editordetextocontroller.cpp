@@ -26,9 +26,8 @@ void controladores::EditorDeTextoController::carregueArquivo(const QString &nome
     if (!arquivo.open(QFile::ReadOnly | QFile::Text))
     {
 
-        auto mensagem = QString("Não pode ler o aquivo " +
-                                QDir::toNativeSeparators(nomeDoArquivo) +
-                                ":\n" + arquivo.errorString() + ".");
+        auto mensagem = QString("Não pode ler o aquivo %1:\n%2.")
+                        .arg(QDir::toNativeSeparators(nomeDoArquivo), arquivo.errorString());
 
         QMessageBox::warning(editorDeTextoView, QString("Aplicação"), mensagem);
         return;
@@ -64,4 +63,34 @@ void controladores::EditorDeTextoController::setArquivoAtual(const QString &nome
     }
 
     editorDeTextoView->setWindowFilePath(titulo);
+}
+
+bool controladores::EditorDeTextoController::salveArquivo(const QString &nomeDoArquivo)
+{
+    QFile arquivo(nomeDoArquivo);
+    if (!arquivo.open(QFile::WriteOnly | QFile::Text)) {
+
+        auto mensagem = QString("Não pode escrever o aquivo %1:\n%2.")
+                        .arg(QDir::toNativeSeparators(nomeDoArquivo), arquivo.errorString());
+
+        QMessageBox::warning(editorDeTextoView, QString("Aplicação"), mensagem);
+
+        return false;
+    }
+
+    QTextStream out(&arquivo);
+#ifndef QT_NO_CURSOR
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+#endif
+
+    out << campoTexto->toPlainText();
+
+#ifndef QT_NO_CURSOR
+    QApplication::restoreOverrideCursor();
+#endif
+
+    setArquivoAtual(nomeDoArquivo);
+    mostreMensagemNaBarraDeStatus(QString("%1 salvo...").arg(arquivoAtual), 2000);
+
+    return true;
 }

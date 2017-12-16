@@ -273,33 +273,13 @@ bool EditorDeTextoView::talvezSalve()
 void EditorDeTextoView::carregueArquivo(const QString &nomeDoArquivo)
 {
     controlador->carregueArquivo(nomeDoArquivo);
-
 }
 
 bool EditorDeTextoView::salveArquivo(const QString &nomeDoArquivo)
 {
-    ////TODO: Refatorar essa parte abaixo
-    QFile file(nomeDoArquivo);
-    if (!file.open(QFile::WriteOnly | QFile::Text)) {
-        QMessageBox::warning(this, tr("Application"),
-                             tr("Cannot write file %1:\n%2.")
-                             .arg(QDir::toNativeSeparators(nomeDoArquivo),
-                                  file.errorString()));
-        return false;
-    }
+    auto arquivoSalvo = controlador->salveArquivo(nomeDoArquivo);
 
-    QTextStream out(&file);
-#ifndef QT_NO_CURSOR
-    QApplication::setOverrideCursor(Qt::WaitCursor);
-#endif
-    out << campoTexto->toPlainText();
-#ifndef QT_NO_CURSOR
-    QApplication::restoreOverrideCursor();
-#endif
-
-    setArquivoAtual(nomeDoArquivo);
-    statusBar()->showMessage(tr("File saved"), 2000);
-    return true;
+    return arquivoSalvo;
 }
 
 void EditorDeTextoView::setArquivoAtual(const QString &nomeDoArquivo)
