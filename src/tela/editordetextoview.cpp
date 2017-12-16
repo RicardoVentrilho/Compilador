@@ -70,21 +70,16 @@ void EditorDeTextoView::abra()
 
 bool EditorDeTextoView::salve()
 {
-    if (arquivoAtual.isEmpty()) {
-        return salveComo();
-    } else {
-        return salveArquivo(arquivoAtual);
-    }
+    auto arquivoSalvo = controlador->salve();
+
+    return arquivoSalvo;
 }
 
 bool EditorDeTextoView::salveComo()
 {
-    QFileDialog dialog(this);
-    dialog.setWindowModality(Qt::WindowModal);
-    dialog.setAcceptMode(QFileDialog::AcceptSave);
-    if (dialog.exec() != QDialog::Accepted)
-        return false;
-    return salveArquivo(dialog.selectedFiles().first());
+    auto arquivoSalvo = controlador->salveComo();
+
+    return arquivoSalvo;
 }
 
 void EditorDeTextoView::sobre()
@@ -226,7 +221,7 @@ void EditorDeTextoView::crieBarraDeStatus()
     QStatusBar* barraDeStatus = statusBar();
 
     controlador->setBarraDeStatus(barraDeStatus);
-    controlador->mostreMensagemNaBarraDeStatus(tr("Aberto!"));
+    controlador->mostreMensagemNaBarraDeStatus(tr("Aberto..."));
 }
 
 void EditorDeTextoView::leiaConfiguracoes()
@@ -251,23 +246,9 @@ void EditorDeTextoView::escrevaConfiguracoes()
 
 bool EditorDeTextoView::talvezSalve()
 {
-    ////TODO: Refatorar essa parte abaixo
-    if (!campoTexto->document()->isModified())
-        return true;
-    const QMessageBox::StandardButton ret
-        = QMessageBox::warning(this, tr("Application"),
-                               tr("The document has been modified.\n"
-                                  "Do you want to save your changes?"),
-                               QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-    switch (ret) {
-    case QMessageBox::Save:
-        return salve();
-    case QMessageBox::Cancel:
-        return false;
-    default:
-        break;
-    }
-    return true;
+    auto arquivoSalvo = controlador->talvezSalve();
+
+    return arquivoSalvo;
 }
 
 void EditorDeTextoView::carregueArquivo(const QString &nomeDoArquivo)

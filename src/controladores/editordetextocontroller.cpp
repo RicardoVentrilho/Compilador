@@ -21,8 +21,8 @@ void controladores::EditorDeTextoController::mostreMensagemNaBarraDeStatus(QStri
 
 void controladores::EditorDeTextoController::carregueArquivo(const QString &nomeDoArquivo)
 {
-    ////TODO: Refatorar essa parte abaixo
     QFile arquivo(nomeDoArquivo);
+
     if (!arquivo.open(QFile::ReadOnly | QFile::Text))
     {
 
@@ -30,6 +30,7 @@ void controladores::EditorDeTextoController::carregueArquivo(const QString &nome
                         .arg(QDir::toNativeSeparators(nomeDoArquivo), arquivo.errorString());
 
         QMessageBox::warning(editorDeTextoView, QString("Aplicação"), mensagem);
+
         return;
     }
 
@@ -68,7 +69,9 @@ void controladores::EditorDeTextoController::setArquivoAtual(const QString &nome
 bool controladores::EditorDeTextoController::salveArquivo(const QString &nomeDoArquivo)
 {
     QFile arquivo(nomeDoArquivo);
-    if (!arquivo.open(QFile::WriteOnly | QFile::Text)) {
+
+    if (!arquivo.open(QFile::WriteOnly | QFile::Text))
+    {
 
         auto mensagem = QString("Não pode escrever o aquivo %1:\n%2.")
                         .arg(QDir::toNativeSeparators(nomeDoArquivo), arquivo.errorString());
@@ -93,4 +96,53 @@ bool controladores::EditorDeTextoController::salveArquivo(const QString &nomeDoA
     mostreMensagemNaBarraDeStatus(QString("%1 salvo...").arg(arquivoAtual), 2000);
 
     return true;
+}
+
+bool controladores::EditorDeTextoController::talvezSalve()
+{
+    if (!campoTexto->document()->isModified())
+    {
+        return true;
+    }
+
+    auto retorno = QMessageBox::warning(editorDeTextoView,
+                                        QString("Aplicação"),
+                                        QString("O arquivo foi modificado.\nDeseja salvar as alterações?"),
+                                        QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    switch (retorno)
+    {
+        case QMessageBox::Save:
+            return salve();
+        case QMessageBox::Cancel:
+            return false;
+        default:
+            break;
+    }
+    return true;
+}
+
+bool controladores::EditorDeTextoController::salve()
+{
+    if (arquivoAtual.isEmpty())
+    {
+        return salveComo();
+    } else
+    {
+        return salveArquivo(arquivoAtual);
+    }
+}
+
+bool controladores::EditorDeTextoController::salveComo()
+{
+    QFileDialog dialogo(editorDeTextoView);
+
+    dialogo.setWindowModality(Qt::WindowModal);
+    dialogo.setAcceptMode(QFileDialog::AcceptSave);
+
+    if (dialogo.exec() != QDialog::Accepted)
+    {
+        return false;
+    }
+
+    return salveArquivo(dialogo.selectedFiles().first());
 }

@@ -9,6 +9,7 @@
 #include <QTextStream>
 #include <QPlainTextEdit>
 #include <QApplication>
+#include <QFileDialog>
 
 namespace controladores
 {
@@ -24,6 +25,9 @@ public:
     void setArquivoAtual(const QString &nomeDoArquivo);
 
     bool salveArquivo(const QString &nomeDoArquivo);
+    bool talvezSalve();
+    bool salve();
+    bool salveComo();
 
 private:
     QStatusBar* barraDeStatus;
