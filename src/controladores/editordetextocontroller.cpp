@@ -9,9 +9,16 @@ controladores::EditorDeTextoController::EditorDeTextoController(QWidget* editorD
 {
 }
 
+controladores::EditorDeTextoController::~EditorDeTextoController()
+{
+    delete editorDeTextoView;
+    delete campoTexto;
+}
+
 void controladores::EditorDeTextoController::aoFechar(QCloseEvent *event)
 {
-    if (talvezSalve()) {
+    if (talvezSalve())
+    {
         definaConfiguracoes();
         event->accept();
     } else {

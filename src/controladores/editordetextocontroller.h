@@ -23,6 +23,7 @@ class EditorDeTextoController : public QObjectData
 {
 public:
     EditorDeTextoController(QWidget* editorDeTextoView, QPlainTextEdit* campoTexto, QString arquivoAtual = QString());
+    ~EditorDeTextoController();
 
     void aoFechar(QCloseEvent *event);
 
