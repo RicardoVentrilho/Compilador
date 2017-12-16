@@ -19,6 +19,7 @@ public:
 
 protected:
     void aoFechar(QCloseEvent *event);
+    void criMenuComAcoesDeArquivo();
 
 private slots:
     void crieArquivo();
@@ -31,21 +32,20 @@ private slots:
 private:
     const int ALTURA_RESULTADO_DA_COMPILACAO = 100;
 
-    void crieAcoes();
+    void crieMenuComAcoes();
     void crieBarraDeStatus();
     void leiaConfiguracoes();
-    void escrevaConfiguracoes();
+    void definaConfiguracoes();
     bool talvezSalve();
     bool salveArquivo(const QString &nomeDoArquivo);
     void setArquivoAtual(const QString &nomeDoArquivo);
+    void monteLayout();
 
-    ////TODO: Refatorar nome abaixo.
+    ////TODO: Refatorar nome abaixo
     QString strippedName(const QString &nomeCompletoDoArquivo);
 
     QPlainTextEdit *campoTexto, *resultadoDaCompilacao;
     QString arquivoAtual;
-    void monteLayout();
-    void crie_botao_novo(QMenu *menu_arquivo, QToolBar *toolbar_menu);
 
     EditorDeTextoController* controlador;
 };

@@ -9,6 +9,41 @@ controladores::EditorDeTextoController::EditorDeTextoController(QWidget* editorD
 {
 }
 
+void controladores::EditorDeTextoController::aoFechar(QCloseEvent *event)
+{
+    if (talvezSalve()) {
+        definaConfiguracoes();
+        event->accept();
+    } else {
+        event->ignore();
+    }
+}
+
+void controladores::EditorDeTextoController::definaConfiguracoes()
+{
+    QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
+    settings.setValue("geometria", editorDeTextoView->saveGeometry());
+}
+
+void controladores::EditorDeTextoController::leiaConfiguracoes()
+{
+    QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
+
+    const QByteArray geometria = settings.value("geometria", QByteArray()).toByteArray();
+
+    if (geometria.isEmpty())
+    {
+        auto geomotriaAplicacao = QApplication::desktop()->availableGeometry(editorDeTextoView);
+
+        editorDeTextoView->resize(geomotriaAplicacao.width() / 3, geomotriaAplicacao.height() / 2);
+        editorDeTextoView->move((geomotriaAplicacao.width() - editorDeTextoView->width()) / 2,
+                                (geomotriaAplicacao.height() - editorDeTextoView->height()) / 2);
+    } else
+    {
+        editorDeTextoView->restoreGeometry(geometria);
+    }
+}
+
 void controladores::EditorDeTextoController::setBarraDeStatus(QStatusBar* barraDeStatus)
 {
     this->barraDeStatus = barraDeStatus;
@@ -64,6 +99,106 @@ void controladores::EditorDeTextoController::setArquivoAtual(const QString &nome
     }
 
     editorDeTextoView->setWindowFilePath(titulo);
+}
+
+void controladores::EditorDeTextoController::crieArquivo()
+{
+    if (talvezSalve())
+    {
+        campoTexto->clear();
+        setArquivoAtual(QString());
+    }
+}
+
+void controladores::EditorDeTextoController::abra()
+{
+    if (talvezSalve())
+    {
+        QString nomeDoArquivo = QFileDialog::getOpenFileName(editorDeTextoView);
+
+        if (!nomeDoArquivo.isEmpty())
+        {
+            carregueArquivo(nomeDoArquivo);
+        }
+    }
+}
+
+QAction* controladores::EditorDeTextoController::crieMenuNovo(QMenu* menuArquivo, QToolBar* menuToolBar)
+{
+    auto iconeNovo = QIcon::fromTheme("novo-documento", QIcon(":/imagens/novo.png"));
+    auto acaoNovo = new QAction(iconeNovo, QString("Novo"), editorDeTextoView);
+
+    acaoNovo->setShortcuts(QKeySequence::New);
+    acaoNovo->setStatusTip(QString("Criar novo arquivo"));
+
+    menuArquivo->addAction(acaoNovo);
+    menuToolBar->addAction(acaoNovo);
+
+    return acaoNovo;
+}
+
+QAction* controladores::EditorDeTextoController::crieMenuAbrir(QMenu* menuArquivo, QToolBar* menuToolBar)
+{
+    auto iconeAbrir = QIcon::fromTheme("document-open", QIcon(":/imagens/abrir.png"));
+    auto acaoAbrir = new QAction(iconeAbrir, QString("Abrir..."), editorDeTextoView);
+
+    acaoAbrir->setShortcuts(QKeySequence::Open);
+    acaoAbrir->setStatusTip(QString("Abrir arquivo existente"));
+
+    menuArquivo->addAction(acaoAbrir);
+    menuToolBar->addAction(acaoAbrir);
+
+    return acaoAbrir;
+}
+
+QAction* controladores::EditorDeTextoController::crieMenuSalvar(QMenu* menuArquivo, QToolBar* menuToolBar)
+{
+    auto iconeSalvar = QIcon::fromTheme("document-save",
+                                        QIcon(":/imagens/salvar.png"));
+
+    auto acaoSalvar = new QAction(iconeSalvar,
+                                  QString("Salvar"),
+                                  editorDeTextoView);
+
+    acaoSalvar->setShortcuts(QKeySequence::Save);
+    acaoSalvar->setStatusTip(QString("Salvar documento"));
+
+    menuArquivo->addAction(acaoSalvar);
+    menuToolBar->addAction(acaoSalvar);
+
+    return acaoSalvar;
+}
+
+QAction* controladores::EditorDeTextoController::crieMenuSalvarComo(QMenu* menuArquivo)
+{
+//    auto iconeSalvarComo = QIcon::fromTheme("document-save-as");
+
+//    auto acaoSalvarComo = menuArquivo->addAction(iconeSalvarComo,
+//                                                 QString("Salvar Como..."),
+//                                                 editorDeTextoView,
+//                                                 &controladores::EditorDeTextoController::salveComo);
+
+//    acaoSalvarComo->setShortcuts(QKeySequence::SaveAs);
+//    acaoSalvarComo->setStatusTip(QString("Salvar documento em novo arquivo"));
+
+//    menuArquivo->addSeparator();
+
+//    return acaoSalvarComo;
+}
+
+QAction* controladores::EditorDeTextoController::crieMenuFechar(QMenu* menuArquivo)
+{
+    auto iconeFechar = QIcon::fromTheme("application-exit");
+
+    auto acaoFechar = menuArquivo->addAction(iconeFechar,
+                                          QString("Fechar"),
+                                          editorDeTextoView,
+                                          &QWidget::close);
+
+    acaoFechar->setShortcuts(QKeySequence::Quit);
+    acaoFechar->setStatusTip(QString("Fechar aplicacao"));
+
+    return acaoFechar;
 }
 
 bool controladores::EditorDeTextoController::salveArquivo(const QString &nomeDoArquivo)

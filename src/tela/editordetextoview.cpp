@@ -10,7 +10,8 @@ EditorDeTextoView::EditorDeTextoView()
 
     controlador = new EditorDeTextoController(this, campoTexto, arquivoAtual);
 
-    crieAcoes();
+    crieMenuComAcoes();
+
     crieBarraDeStatus();
 
     leiaConfiguracoes();
@@ -21,6 +22,7 @@ EditorDeTextoView::EditorDeTextoView()
             &EditorDeTextoView::arquivoFoiModificado);
 
     setArquivoAtual(QString());
+
     setUnifiedTitleAndToolBarOnMac(true);
 }
 
@@ -43,29 +45,17 @@ void EditorDeTextoView::monteLayout()
 
 void EditorDeTextoView::aoFechar(QCloseEvent *event)
 {
-    if (talvezSalve()) {
-        escrevaConfiguracoes();
-        event->accept();
-    } else {
-        event->ignore();
-    }
+    controlador->aoFechar(event);
 }
 
 void EditorDeTextoView::crieArquivo()
 {
-    if (talvezSalve()) {
-        campoTexto->clear();
-        setArquivoAtual(QString());
-    }
+    controlador->crieArquivo();
 }
 
 void EditorDeTextoView::abra()
 {
-    if (talvezSalve()) {
-        QString fileName = QFileDialog::getOpenFileName(this);
-        if (!fileName.isEmpty())
-            carregueArquivo(fileName);
-    }
+    controlador->abra();
 }
 
 bool EditorDeTextoView::salve()
@@ -85,7 +75,7 @@ bool EditorDeTextoView::salveComo()
 void EditorDeTextoView::sobre()
 {
    QMessageBox::about(this, tr("Sobre este compilador!"),
-            tr("<b>Compilador</b> que traduz Portugol para C."));
+                            tr("<b>Compilador</b> que traduz Portugol para C."));
 }
 
 void EditorDeTextoView::arquivoFoiModificado()
@@ -93,68 +83,37 @@ void EditorDeTextoView::arquivoFoiModificado()
     setWindowModified(campoTexto->document()->isModified());
 }
 
-void EditorDeTextoView::crie_botao_novo(QMenu *menu_arquivo, QToolBar *toolbar_menu)
+void EditorDeTextoView::criMenuComAcoesDeArquivo()
 {
-//    auto icone_novo = FabricaDeComponentes::crie_icone("novo-documento", ":/imagens/novo.png");
-//    auto action_novo = FabricaDeComponentes::crie_action(icone_novo, "Novo", this);
-//    connect(action_novo, &QAction::triggered, this, &TelaPrincipal::crie_arquivo);
-//    adicione_acao_no_menu(menu_arquivo, action_novo);
-//    adicione_acao_na_toolbar(toolbar_menu, action_novo);
+    QMenu *menuArquivo = menuBar()->addMenu(tr("&Arquivo"));
+    QToolBar *menuArquivoToolBar = addToolBar(tr("Arquivo"));
+
+    auto acaoNovo = controlador->crieMenuNovo(menuArquivo, menuArquivoToolBar);
+    connect(acaoNovo, &QAction::triggered, this, &EditorDeTextoView::crieArquivo);
+
+    auto acaoAbrir = controlador->crieMenuAbrir(menuArquivo, menuArquivoToolBar);
+    connect(acaoAbrir, &QAction::triggered, this, &EditorDeTextoView::abra);
+
+//    auto acaoFechar = controlador->crieMenuFechar(menuArquivo);
+//    connect(acaoFechar, &QAction::triggered, this, &EditorDeTextoView::aoFechar);
+
+    auto acaoSalvar = controlador->crieMenuSalvar(menuArquivo, menuArquivoToolBar);
+    connect(acaoSalvar, &QAction::triggered, this, &EditorDeTextoView::salve);
+
+//    auto acaoSalvarComo = controlador->crieMenuSalvarComo(menuArquivo);
+//    connect(acaoSalvarComo, &QAction::triggered, this, &EditorDeTextoView::salve);
 }
 
-void EditorDeTextoView::crieAcoes()
+void EditorDeTextoView::crieMenuComAcoes()
 {
-    //Novo Arquivo
-    QMenu *menu_arquivo = menuBar()->addMenu(tr("&Arquivo"));
-    QToolBar *toolbar_menu = addToolBar(tr("Arquivo"));
+    criMenuComAcoesDeArquivo();
 
-    const QIcon newIcon = QIcon::fromTheme("novo-documento", QIcon(":/imagens/novo.png"));
-    QAction *newAct = new QAction(newIcon, tr("Novo"), this);
-    newAct->setShortcuts(QKeySequence::New);
-    newAct->setStatusTip(tr("Criar novo arquivo"));
-    connect(newAct, &QAction::triggered, this, &EditorDeTextoView::crieArquivo);
-    menu_arquivo->addAction(newAct);
-    toolbar_menu->addAction(newAct);
 
-    crie_botao_novo(menu_arquivo, toolbar_menu);
-
-    //Abrir
-    const QIcon openIcon = QIcon::fromTheme("document-open", QIcon(":/imagens/abrir.png"));
-    QAction *openAct = new QAction(openIcon, tr("Abrir..."), this);
-    openAct->setShortcuts(QKeySequence::Open);
-    openAct->setStatusTip(tr("Abrir arquivo existente"));
-    connect(openAct, &QAction::triggered, this, &EditorDeTextoView::abra);
-    menu_arquivo->addAction(openAct);
-    toolbar_menu->addAction(openAct);
-
-    //Salvar
-    const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/imagens/salvar.png"));
-    QAction *saveAct = new QAction(saveIcon, tr("Salvar"), this);
-    saveAct->setShortcuts(QKeySequence::Save);
-    saveAct->setStatusTip(tr("Salvar documento"));
-    connect(saveAct, &QAction::triggered, this, &EditorDeTextoView::salve);
-    menu_arquivo->addAction(saveAct);
-    toolbar_menu->addAction(saveAct);
-
-    //Salvar Como
-    const QIcon saveAsIcon = QIcon::fromTheme("document-save-as");
-    QAction *saveAsAct = menu_arquivo->addAction(saveAsIcon, tr("Salvar Como..."), this, &EditorDeTextoView::salveComo);
-    saveAsAct->setShortcuts(QKeySequence::SaveAs);
-    saveAsAct->setStatusTip(tr("Salvar documento em novo arquivo"));
-
-    menu_arquivo->addSeparator();
-
-    //Fechar
-    const QIcon exitIcon = QIcon::fromTheme("application-exit");
-    QAction *exitAct = menu_arquivo->addAction(exitIcon, tr("Fechar"), this, &QWidget::close);
-    exitAct->setShortcuts(QKeySequence::Quit);
-    exitAct->setStatusTip(tr("Fechar aplicacao"));
-
-    //Editar
-    QMenu *editMenu = menuBar()->addMenu(tr("Editar"));
-    QToolBar *editToolBar = addToolBar(tr("Editar"));
+    QMenu *menuEditar = menuBar()->addMenu(tr("Editar"));
+    QToolBar *menuEditarToolBar = addToolBar(tr("Editar"));
 
 #ifndef QT_NO_CLIPBOARD
+
     const QIcon cutIcon = QIcon::fromTheme("edit-cut", QIcon(":/imagens/recortar.png"));
     QAction *cutAct = new QAction(cutIcon, tr("Recortar"), this);
 
@@ -163,8 +122,8 @@ void EditorDeTextoView::crieAcoes()
     cutAct->setStatusTip(tr("Cut the current selection's contents to the "
                             "clipboard"));
     connect(cutAct, &QAction::triggered, campoTexto, &QPlainTextEdit::cut);
-    editMenu->addAction(cutAct);
-    editToolBar->addAction(cutAct);
+    menuEditar->addAction(cutAct);
+    menuEditarToolBar->addAction(cutAct);
 
     const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/imagens/copiar.png"));
     QAction *copyAct = new QAction(copyIcon, tr("Copiar"), this);
@@ -173,8 +132,8 @@ void EditorDeTextoView::crieAcoes()
     copyAct->setStatusTip(tr("Copy the current selection's contents to the "
                              "clipboard"));
     connect(copyAct, &QAction::triggered, campoTexto, &QPlainTextEdit::copy);
-    editMenu->addAction(copyAct);
-    editToolBar->addAction(copyAct);
+    menuEditar->addAction(copyAct);
+    menuEditarToolBar->addAction(copyAct);
 
     const QIcon pasteIcon = QIcon::fromTheme("edit-paste", QIcon(":/imagens/colar.png"));
     QAction *pasteAct = new QAction(pasteIcon, tr("Colar"), this);
@@ -183,8 +142,8 @@ void EditorDeTextoView::crieAcoes()
     pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
                               "selection"));
     connect(pasteAct, &QAction::triggered, campoTexto, &QPlainTextEdit::paste);
-    editMenu->addAction(pasteAct);
-    editToolBar->addAction(pasteAct);
+    menuEditar->addAction(pasteAct);
+    menuEditarToolBar->addAction(pasteAct);
 
     menuBar()->addSeparator();
 
@@ -207,13 +166,10 @@ void EditorDeTextoView::crieAcoes()
     ////TODO: Refatorar essa parte abaixo
     aboutAct->setStatusTip(tr("Show the application's About box"));
 
-#ifndef QT_NO_CLIPBOARD
-
     cutAct->setEnabled(false);
     copyAct->setEnabled(false);
     connect(campoTexto, &QPlainTextEdit::copyAvailable, cutAct, &QAction::setEnabled);
     connect(campoTexto, &QPlainTextEdit::copyAvailable, copyAct, &QAction::setEnabled);
-#endif // !QT_NO_CLIPBOARD
 }
 
 void EditorDeTextoView::crieBarraDeStatus()
@@ -226,22 +182,12 @@ void EditorDeTextoView::crieBarraDeStatus()
 
 void EditorDeTextoView::leiaConfiguracoes()
 {
-    QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
-    const QByteArray geometry = settings.value("geometria", QByteArray()).toByteArray();
-    if (geometry.isEmpty()) {
-        const QRect availableGeometry = QApplication::desktop()->availableGeometry(this);
-        resize(availableGeometry.width() / 3, availableGeometry.height() / 2);
-        move((availableGeometry.width() - width()) / 2,
-             (availableGeometry.height() - height()) / 2);
-    } else {
-        restoreGeometry(geometry);
-    }
+    controlador->leiaConfiguracoes();
 }
 
-void EditorDeTextoView::escrevaConfiguracoes()
+void EditorDeTextoView::definaConfiguracoes()
 {
-    QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
-    settings.setValue("geometria", saveGeometry());
+    controlador->definaConfiguracoes();
 }
 
 bool EditorDeTextoView::talvezSalve()
