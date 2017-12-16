@@ -17,6 +17,8 @@ public:
     EditorDeTextoView();
     void carregueArquivo(const QString &nomeDoArquivo);
 
+    void crieMenuComAcoesDeEditar();
+
 protected:
     void aoFechar(QCloseEvent *event);
     void criMenuComAcoesDeArquivo();

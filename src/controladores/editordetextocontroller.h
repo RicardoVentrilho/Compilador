@@ -40,11 +40,15 @@ public:
     bool salve();
     bool salveComo();
 
+    void adicioneSeparador(QMenu* menu);
     QAction *crieMenuNovo(QMenu* menuArquivo, QToolBar* menuToolBar);
     QAction *crieMenuAbrir(QMenu* menuArquivo, QToolBar* menuToolBar);
     QAction *crieMenuSalvar(QMenu* menuArquivo, QToolBar* menuToolBar);
     QAction *crieMenuSalvarComo(QMenu* menuArquivo);
     QAction *crieMenuFechar(QMenu* menuArquivo);
+    QAction *crieMenuRecortar(QMenu *menuEditar, QToolBar *menuToolBar);
+    QAction *crieMenuCopiar(QMenu *menuEditar, QToolBar *menuToolBar);
+    QAction *crieMenuColar(QMenu *menuEditar, QToolBar *menuToolBar);
 
 private:
     QStatusBar* barraDeStatus;

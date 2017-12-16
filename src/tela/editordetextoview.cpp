@@ -102,50 +102,37 @@ void EditorDeTextoView::criMenuComAcoesDeArquivo()
 
 //    auto acaoSalvarComo = controlador->crieMenuSalvarComo(menuArquivo);
 //    connect(acaoSalvarComo, &QAction::triggered, this, &EditorDeTextoView::salve);
+
+    controlador->adicioneSeparador(menuArquivo);
+}
+
+void EditorDeTextoView::crieMenuComAcoesDeEditar()
+{
+    QMenu *menuEditar = menuBar()->addMenu(tr("Editar"));
+    QToolBar *menuEditarToolBar = addToolBar(tr("Editar"));
+
+    auto acaoRecortar = controlador->crieMenuRecortar(menuEditar, menuEditarToolBar);
+    connect(acaoRecortar, &QAction::triggered, campoTexto, &QPlainTextEdit::cut);
+
+    auto acaoColar = controlador->crieMenuColar(menuEditar, menuEditarToolBar);
+    connect(acaoColar, &QAction::triggered, campoTexto, &QPlainTextEdit::paste);
+
+    auto acaoCopiar = controlador->crieMenuCopiar(menuEditar, menuEditarToolBar);
+    connect(acaoCopiar, &QAction::triggered, campoTexto, &QPlainTextEdit::copy);
+
+    acaoRecortar->setEnabled(false);
+    acaoCopiar->setEnabled(false);
+    connect(campoTexto, &QPlainTextEdit::copyAvailable, acaoRecortar, &QAction::setEnabled);
+    connect(campoTexto, &QPlainTextEdit::copyAvailable, acaoCopiar, &QAction::setEnabled);
+
+    controlador->adicioneSeparador(menuEditar);
 }
 
 void EditorDeTextoView::crieMenuComAcoes()
 {
     criMenuComAcoesDeArquivo();
 
-
-    QMenu *menuEditar = menuBar()->addMenu(tr("Editar"));
-    QToolBar *menuEditarToolBar = addToolBar(tr("Editar"));
-
-#ifndef QT_NO_CLIPBOARD
-
-    const QIcon cutIcon = QIcon::fromTheme("edit-cut", QIcon(":/imagens/recortar.png"));
-    QAction *cutAct = new QAction(cutIcon, tr("Recortar"), this);
-
-    ////TODO: Refatorar essa parte abaixo
-    cutAct->setShortcuts(QKeySequence::Cut);
-    cutAct->setStatusTip(tr("Cut the current selection's contents to the "
-                            "clipboard"));
-    connect(cutAct, &QAction::triggered, campoTexto, &QPlainTextEdit::cut);
-    menuEditar->addAction(cutAct);
-    menuEditarToolBar->addAction(cutAct);
-
-    const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/imagens/copiar.png"));
-    QAction *copyAct = new QAction(copyIcon, tr("Copiar"), this);
-    copyAct->setShortcuts(QKeySequence::Copy);
-    ////TODO: Refatorar essa parte abaixo
-    copyAct->setStatusTip(tr("Copy the current selection's contents to the "
-                             "clipboard"));
-    connect(copyAct, &QAction::triggered, campoTexto, &QPlainTextEdit::copy);
-    menuEditar->addAction(copyAct);
-    menuEditarToolBar->addAction(copyAct);
-
-    const QIcon pasteIcon = QIcon::fromTheme("edit-paste", QIcon(":/imagens/colar.png"));
-    QAction *pasteAct = new QAction(pasteIcon, tr("Colar"), this);
-    pasteAct->setShortcuts(QKeySequence::Paste);
-    ////TODO: Refatorar essa parte abaixo
-    pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
-                              "selection"));
-    connect(pasteAct, &QAction::triggered, campoTexto, &QPlainTextEdit::paste);
-    menuEditar->addAction(pasteAct);
-    menuEditarToolBar->addAction(pasteAct);
-
-    menuBar()->addSeparator();
+    crieMenuComAcoesDeEditar();
 
     //Compilador
     QMenu *compilador_menu = menuBar()->addMenu(tr("Ferramentas"));
@@ -153,23 +140,16 @@ void EditorDeTextoView::crieMenuComAcoes()
 
     const QIcon icone_compilar = QIcon::fromTheme("document-save", QIcon(":/imagens/build.png"));
     QAction *acao_compilar = new QAction(icone_compilar, tr("Compilar"), this);
-    //saveAct->setShortcuts(QKeySequence::Save);
-    //saveAct->setStatusTip(tr("Salvar documento"));
-    //connect(saveAct, &QAction::triggered, this, &TelaPrincipal::salve);
+
     compilador_menu->addAction(acao_compilar);
     tool_bar_compilador->addAction(acao_compilar);
 
-#endif // !QT_NO_CLIPBOARD
-
+    //Help
     QMenu *helpMenu = menuBar()->addMenu(tr("Ajuda"));
     QAction *aboutAct = helpMenu->addAction(tr("Sobre"), this, &EditorDeTextoView::sobre);
-    ////TODO: Refatorar essa parte abaixo
     aboutAct->setStatusTip(tr("Show the application's About box"));
 
-    cutAct->setEnabled(false);
-    copyAct->setEnabled(false);
-    connect(campoTexto, &QPlainTextEdit::copyAvailable, cutAct, &QAction::setEnabled);
-    connect(campoTexto, &QPlainTextEdit::copyAvailable, copyAct, &QAction::setEnabled);
+
 }
 
 void EditorDeTextoView::crieBarraDeStatus()

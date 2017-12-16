@@ -181,8 +181,6 @@ QAction* controladores::EditorDeTextoController::crieMenuSalvarComo(QMenu* menuA
 //    acaoSalvarComo->setShortcuts(QKeySequence::SaveAs);
 //    acaoSalvarComo->setStatusTip(QString("Salvar documento em novo arquivo"));
 
-//    menuArquivo->addSeparator();
-
 //    return acaoSalvarComo;
 }
 
@@ -199,6 +197,54 @@ QAction* controladores::EditorDeTextoController::crieMenuFechar(QMenu* menuArqui
     acaoFechar->setStatusTip(QString("Fechar aplicacao"));
 
     return acaoFechar;
+}
+
+QAction *controladores::EditorDeTextoController::crieMenuRecortar(QMenu *menuEditar, QToolBar *menuToolBar)
+{
+#ifndef QT_NO_CLIPBOARD
+    auto iconeRecortar = QIcon::fromTheme("edit-cut", QIcon(":/imagens/recortar.png"));
+    auto acaoRecortar = new QAction(iconeRecortar, QString("Recortar"), editorDeTextoView);
+
+    acaoRecortar->setShortcuts(QKeySequence::Cut);
+    acaoRecortar->setStatusTip(QString("Recorte o conteúdo da seleção atual para a área de transferência"));
+
+    menuEditar->addAction(acaoRecortar);
+    menuToolBar->addAction(acaoRecortar);
+
+    return acaoRecortar;
+#endif // !QT_NO_CLIPBOARD
+}
+
+QAction *controladores::EditorDeTextoController::crieMenuCopiar(QMenu *menuEditar, QToolBar *menuToolBar)
+{
+#ifndef QT_NO_CLIPBOARD
+    auto iconeCopiar = QIcon::fromTheme("edit-copy", QIcon(":/imagens/copiar.png"));
+    auto acaoCopiar = new QAction(iconeCopiar, QString("Copiar"), editorDeTextoView);
+
+    acaoCopiar->setShortcuts(QKeySequence::Copy);
+    acaoCopiar->setStatusTip(QString("Copie o conteúdo da seleção atual para a área de transferência"));
+
+    menuEditar->addAction(acaoCopiar);
+    menuToolBar->addAction(acaoCopiar);
+
+    return acaoCopiar;
+#endif // !QT_NO_CLIPBOARD
+}
+
+QAction *controladores::EditorDeTextoController::crieMenuColar(QMenu *menuEditar, QToolBar *menuToolBar)
+{
+#ifndef QT_NO_CLIPBOARD
+    const QIcon iconeColar = QIcon::fromTheme("edit-paste", QIcon(":/imagens/colar.png"));
+    QAction *acaoColar = new QAction(iconeColar, QString("Colar"), editorDeTextoView);
+
+    acaoColar->setShortcuts(QKeySequence::Paste);
+    acaoColar->setStatusTip(QString("Cole o conteúdo da seleção atual para a área de transferência"));
+
+    menuEditar->addAction(acaoColar);
+    menuToolBar->addAction(acaoColar);
+
+    return acaoColar;
+#endif // !QT_NO_CLIPBOARD
 }
 
 bool controladores::EditorDeTextoController::salveArquivo(const QString &nomeDoArquivo)
@@ -280,4 +326,9 @@ bool controladores::EditorDeTextoController::salveComo()
     }
 
     return salveArquivo(dialogo.selectedFiles().first());
+}
+
+void controladores::EditorDeTextoController::adicioneSeparador(QMenu *menu)
+{
+    menu->addSeparator();
 }
