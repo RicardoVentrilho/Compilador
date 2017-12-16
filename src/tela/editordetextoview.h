@@ -18,15 +18,15 @@ public:
     void carregueArquivo(const QString &nomeDoArquivo);
 
 protected:
-    void ao_fechar(QCloseEvent *event);
+    void aoFechar(QCloseEvent *event);
 
 private slots:
-    void crie_arquivo();
+    void crieArquivo();
     void abra();
     bool salve();
-    bool salve_como();
+    bool salveComo();
     void sobre();
-    void documento_foi_modificado();
+    void arquivoFoiModificado();
 
 private:
     const int ALTURA_RESULTADO_DA_COMPILACAO = 100;
@@ -36,11 +36,11 @@ private:
     void leiaConfiguracoes();
     void escrevaConfiguracoes();
     bool talvezSalve();
-    bool salveArquivo(const QString &nome_do_arquivo);
-    void setArquivoAtual(const QString &nome_do_arquivo);
+    bool salveArquivo(const QString &nomeDoArquivo);
+    void setArquivoAtual(const QString &nomeDoArquivo);
 
     ////TODO: Refatorar nome abaixo.
-    QString strippedName(const QString &nome_completo_do_arquivo);
+    QString strippedName(const QString &nomeCompletoDoArquivo);
 
     QPlainTextEdit *campoTexto, *resultadoDaCompilacao;
     QString arquivoAtual;

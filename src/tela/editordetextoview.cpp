@@ -18,7 +18,7 @@ EditorDeTextoView::EditorDeTextoView()
     connect(campoTexto->document(),
             &QTextDocument::contentsChanged,
             this,
-            &EditorDeTextoView::documento_foi_modificado);
+            &EditorDeTextoView::arquivoFoiModificado);
 
     setArquivoAtual(QString());
     setUnifiedTitleAndToolBarOnMac(true);
@@ -41,7 +41,7 @@ void EditorDeTextoView::monteLayout()
     centralWidget()->setLayout(layout);
 }
 
-void EditorDeTextoView::ao_fechar(QCloseEvent *event)
+void EditorDeTextoView::aoFechar(QCloseEvent *event)
 {
     if (talvezSalve()) {
         escrevaConfiguracoes();
@@ -51,7 +51,7 @@ void EditorDeTextoView::ao_fechar(QCloseEvent *event)
     }
 }
 
-void EditorDeTextoView::crie_arquivo()
+void EditorDeTextoView::crieArquivo()
 {
     if (talvezSalve()) {
         campoTexto->clear();
@@ -71,13 +71,13 @@ void EditorDeTextoView::abra()
 bool EditorDeTextoView::salve()
 {
     if (arquivoAtual.isEmpty()) {
-        return salve_como();
+        return salveComo();
     } else {
         return salveArquivo(arquivoAtual);
     }
 }
 
-bool EditorDeTextoView::salve_como()
+bool EditorDeTextoView::salveComo()
 {
     QFileDialog dialog(this);
     dialog.setWindowModality(Qt::WindowModal);
@@ -93,7 +93,7 @@ void EditorDeTextoView::sobre()
             tr("<b>Compilador</b> que traduz Portugol para C."));
 }
 
-void EditorDeTextoView::documento_foi_modificado()
+void EditorDeTextoView::arquivoFoiModificado()
 {
     setWindowModified(campoTexto->document()->isModified());
 }
@@ -117,7 +117,7 @@ void EditorDeTextoView::crieAcoes()
     QAction *newAct = new QAction(newIcon, tr("Novo"), this);
     newAct->setShortcuts(QKeySequence::New);
     newAct->setStatusTip(tr("Criar novo arquivo"));
-    connect(newAct, &QAction::triggered, this, &EditorDeTextoView::crie_arquivo);
+    connect(newAct, &QAction::triggered, this, &EditorDeTextoView::crieArquivo);
     menu_arquivo->addAction(newAct);
     toolbar_menu->addAction(newAct);
 
@@ -143,7 +143,7 @@ void EditorDeTextoView::crieAcoes()
 
     //Salvar Como
     const QIcon saveAsIcon = QIcon::fromTheme("document-save-as");
-    QAction *saveAsAct = menu_arquivo->addAction(saveAsIcon, tr("Salvar Como..."), this, &EditorDeTextoView::salve_como);
+    QAction *saveAsAct = menu_arquivo->addAction(saveAsIcon, tr("Salvar Como..."), this, &EditorDeTextoView::salveComo);
     saveAsAct->setShortcuts(QKeySequence::SaveAs);
     saveAsAct->setStatusTip(tr("Salvar documento em novo arquivo"));
 
@@ -276,14 +276,14 @@ void EditorDeTextoView::carregueArquivo(const QString &nomeDoArquivo)
 
 }
 
-bool EditorDeTextoView::salveArquivo(const QString &nome_do_arquivo)
+bool EditorDeTextoView::salveArquivo(const QString &nomeDoArquivo)
 {
     ////TODO: Refatorar essa parte abaixo
-    QFile file(nome_do_arquivo);
+    QFile file(nomeDoArquivo);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
         QMessageBox::warning(this, tr("Application"),
                              tr("Cannot write file %1:\n%2.")
-                             .arg(QDir::toNativeSeparators(nome_do_arquivo),
+                             .arg(QDir::toNativeSeparators(nomeDoArquivo),
                                   file.errorString()));
         return false;
     }
@@ -297,7 +297,7 @@ bool EditorDeTextoView::salveArquivo(const QString &nome_do_arquivo)
     QApplication::restoreOverrideCursor();
 #endif
 
-    setArquivoAtual(nome_do_arquivo);
+    setArquivoAtual(nomeDoArquivo);
     statusBar()->showMessage(tr("File saved"), 2000);
     return true;
 }
@@ -307,7 +307,7 @@ void EditorDeTextoView::setArquivoAtual(const QString &nomeDoArquivo)
     controlador->setArquivoAtual(nomeDoArquivo);
 }
 
-QString EditorDeTextoView::strippedName(const QString &nome_completo_do_arquivo)
+QString EditorDeTextoView::strippedName(const QString &nomeCompletoDoArquivo)
 {
-    return QFileInfo(nome_completo_do_arquivo).fileName();
+    return QFileInfo(nomeCompletoDoArquivo).fileName();
 }
