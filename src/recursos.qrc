@@ -6,5 +6,6 @@
         <file>imagens/novo.png</file>
         <file>imagens/recortar.png</file>
         <file>imagens/salvar.png</file>
+        <file>imagens/build.png</file>
     </qresource>
 </RCC>

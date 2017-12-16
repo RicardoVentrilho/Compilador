@@ -1,125 +1,154 @@
 #include <QtWidgets>
 
-#include "telaprincipal.h"
+#include "editordetextoview.h"
 
-TelaPrincipal::TelaPrincipal()
-    : editor_de_texto(new QPlainTextEdit)
+EditorDeTextoView::EditorDeTextoView()
+    : editorDeTexto(new QPlainTextEdit),
+      resultadoDaCompilacao(new QPlainTextEdit())
 {
-    setCentralWidget(editor_de_texto);
+    controlador = new EditorDeTextoController();
 
-    crie_acoes();
-    crie_barra_de_status();
+    monteLayout();
 
-    leia_configuracoes();
+    crieAcoes();
+    crieBarraDeStatus();
 
-    connect(editor_de_texto->document(), &QTextDocument::contentsChanged,
-            this, &TelaPrincipal::documento_foi_modificado);
+    leiaConfiguracoes();
 
-    set_arquivo_aberto(QString());
+    connect(editorDeTexto->document(), &QTextDocument::contentsChanged, this, &EditorDeTextoView::documento_foi_modificado);
+
+    setArquivoAberto(QString());
     setUnifiedTitleAndToolBarOnMac(true);
 }
 
-void TelaPrincipal::ao_fechar(QCloseEvent *event)
+void EditorDeTextoView::monteLayout()
 {
-    if (talvez_salve()) {
-        escreva_configuracoes();
+    auto layout = new QVBoxLayout();
+    layout->addWidget(editorDeTexto);
+
+    resultadoDaCompilacao->setMinimumHeight(ALTURA_RESULTADO_DA_COMPILACAO);
+    resultadoDaCompilacao->setMaximumHeight(ALTURA_RESULTADO_DA_COMPILACAO);
+
+    resultadoDaCompilacao->setReadOnly(true);
+    resultadoDaCompilacao->insertPlainText("COMPILADOR EM DESENVOLVIMENTO...");
+
+    layout->addWidget(resultadoDaCompilacao);
+
+    setCentralWidget(new QWidget);
+    centralWidget()->setLayout(layout);
+}
+
+void EditorDeTextoView::ao_fechar(QCloseEvent *event)
+{
+    if (talvezSalve()) {
+        escrevaConfiguracoes();
         event->accept();
     } else {
         event->ignore();
     }
 }
 
-void TelaPrincipal::crie_arquivo()
+void EditorDeTextoView::crie_arquivo()
 {
-    if (talvez_salve()) {
-        editor_de_texto->clear();
-        set_arquivo_aberto(QString());
+    if (talvezSalve()) {
+        editorDeTexto->clear();
+        setArquivoAberto(QString());
     }
 }
 
-void TelaPrincipal::abra()
+void EditorDeTextoView::abra()
 {
-    if (talvez_salve()) {
+    if (talvezSalve()) {
         QString fileName = QFileDialog::getOpenFileName(this);
         if (!fileName.isEmpty())
-            carregue_arquivo(fileName);
+            carregueArquivo(fileName);
     }
 }
 
-bool TelaPrincipal::salve()
+bool EditorDeTextoView::salve()
 {
     if (arquivo_aberto.isEmpty()) {
         return salve_como();
     } else {
-        return salve_arquivo(arquivo_aberto);
+        return salveArquivo(arquivo_aberto);
     }
 }
 
-bool TelaPrincipal::salve_como()
+bool EditorDeTextoView::salve_como()
 {
     QFileDialog dialog(this);
     dialog.setWindowModality(Qt::WindowModal);
     dialog.setAcceptMode(QFileDialog::AcceptSave);
     if (dialog.exec() != QDialog::Accepted)
         return false;
-    return salve_arquivo(dialog.selectedFiles().first());
+    return salveArquivo(dialog.selectedFiles().first());
 }
 
-void TelaPrincipal::sobre()
+void EditorDeTextoView::sobre()
 {
-   QMessageBox::about(this, tr("About Application"),
-            tr("The <b>Application</b> example demonstrates how to "
-               "write modern GUI applications using Qt, with a menu bar, "
-               "toolbars, and a status bar."));
+   QMessageBox::about(this, tr("Sobre este compilador!"),
+            tr("<b>Compilador</b> que traduz Portugol para C."));
 }
 
-void TelaPrincipal::documento_foi_modificado()
+void EditorDeTextoView::documento_foi_modificado()
 {
-    setWindowModified(editor_de_texto->document()->isModified());
+    setWindowModified(editorDeTexto->document()->isModified());
 }
 
-void TelaPrincipal::crie_acoes()
+void EditorDeTextoView::crie_botao_novo(QMenu *menu_arquivo, QToolBar *toolbar_menu)
+{
+//    auto icone_novo = FabricaDeComponentes::crie_icone("novo-documento", ":/imagens/novo.png");
+//    auto action_novo = FabricaDeComponentes::crie_action(icone_novo, "Novo", this);
+//    connect(action_novo, &QAction::triggered, this, &TelaPrincipal::crie_arquivo);
+//    adicione_acao_no_menu(menu_arquivo, action_novo);
+//    adicione_acao_na_toolbar(toolbar_menu, action_novo);
+}
+
+void EditorDeTextoView::crieAcoes()
 {
     //Novo Arquivo
-    QMenu *fileMenu = menuBar()->addMenu(tr("&Arquivo"));
-    QToolBar *fileToolBar = addToolBar(tr("Arquivo"));
-    const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/imagens/novo.png"));
+    QMenu *menu_arquivo = menuBar()->addMenu(tr("&Arquivo"));
+    QToolBar *toolbar_menu = addToolBar(tr("Arquivo"));
+
+    const QIcon newIcon = QIcon::fromTheme("novo-documento", QIcon(":/imagens/novo.png"));
     QAction *newAct = new QAction(newIcon, tr("Novo"), this);
     newAct->setShortcuts(QKeySequence::New);
     newAct->setStatusTip(tr("Criar novo arquivo"));
-    connect(newAct, &QAction::triggered, this, &TelaPrincipal::crie_arquivo);
-    fileMenu->addAction(newAct);
-    fileToolBar->addAction(newAct);
+    connect(newAct, &QAction::triggered, this, &EditorDeTextoView::crie_arquivo);
+    menu_arquivo->addAction(newAct);
+    toolbar_menu->addAction(newAct);
+
+    crie_botao_novo(menu_arquivo, toolbar_menu);
 
     //Abrir
     const QIcon openIcon = QIcon::fromTheme("document-open", QIcon(":/imagens/abrir.png"));
     QAction *openAct = new QAction(openIcon, tr("Abrir..."), this);
     openAct->setShortcuts(QKeySequence::Open);
     openAct->setStatusTip(tr("Abrir arquivo existente"));
-    connect(openAct, &QAction::triggered, this, &TelaPrincipal::abra);
-    fileMenu->addAction(openAct);
-    fileToolBar->addAction(openAct);
+    connect(openAct, &QAction::triggered, this, &EditorDeTextoView::abra);
+    menu_arquivo->addAction(openAct);
+    toolbar_menu->addAction(openAct);
 
     //Salvar
     const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/imagens/salvar.png"));
     QAction *saveAct = new QAction(saveIcon, tr("Salvar"), this);
     saveAct->setShortcuts(QKeySequence::Save);
     saveAct->setStatusTip(tr("Salvar documento"));
-    connect(saveAct, &QAction::triggered, this, &TelaPrincipal::salve);
-    fileMenu->addAction(saveAct);
-    fileToolBar->addAction(saveAct);
+    connect(saveAct, &QAction::triggered, this, &EditorDeTextoView::salve);
+    menu_arquivo->addAction(saveAct);
+    toolbar_menu->addAction(saveAct);
 
     //Salvar Como
     const QIcon saveAsIcon = QIcon::fromTheme("document-save-as");
-    QAction *saveAsAct = fileMenu->addAction(saveAsIcon, tr("Salvar Como..."), this, &TelaPrincipal::salve_como);
+    QAction *saveAsAct = menu_arquivo->addAction(saveAsIcon, tr("Salvar Como..."), this, &EditorDeTextoView::salve_como);
     saveAsAct->setShortcuts(QKeySequence::SaveAs);
     saveAsAct->setStatusTip(tr("Salvar documento em novo arquivo"));
 
-    fileMenu->addSeparator();
+    menu_arquivo->addSeparator();
 
     //Fechar
     const QIcon exitIcon = QIcon::fromTheme("application-exit");
-    QAction *exitAct = fileMenu->addAction(exitIcon, tr("Fechar"), this, &QWidget::close);
+    QAction *exitAct = menu_arquivo->addAction(exitIcon, tr("Fechar"), this, &QWidget::close);
     exitAct->setShortcuts(QKeySequence::Quit);
     exitAct->setStatusTip(tr("Fechar aplicacao"));
 
@@ -135,7 +164,7 @@ void TelaPrincipal::crie_acoes()
     cutAct->setShortcuts(QKeySequence::Cut);
     cutAct->setStatusTip(tr("Cut the current selection's contents to the "
                             "clipboard"));
-    connect(cutAct, &QAction::triggered, editor_de_texto, &QPlainTextEdit::cut);
+    connect(cutAct, &QAction::triggered, editorDeTexto, &QPlainTextEdit::cut);
     editMenu->addAction(cutAct);
     editToolBar->addAction(cutAct);
 
@@ -145,7 +174,7 @@ void TelaPrincipal::crie_acoes()
     ////TODO: Refatorar essa parte abaixo
     copyAct->setStatusTip(tr("Copy the current selection's contents to the "
                              "clipboard"));
-    connect(copyAct, &QAction::triggered, editor_de_texto, &QPlainTextEdit::copy);
+    connect(copyAct, &QAction::triggered, editorDeTexto, &QPlainTextEdit::copy);
     editMenu->addAction(copyAct);
     editToolBar->addAction(copyAct);
 
@@ -155,16 +184,28 @@ void TelaPrincipal::crie_acoes()
     ////TODO: Refatorar essa parte abaixo
     pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
                               "selection"));
-    connect(pasteAct, &QAction::triggered, editor_de_texto, &QPlainTextEdit::paste);
+    connect(pasteAct, &QAction::triggered, editorDeTexto, &QPlainTextEdit::paste);
     editMenu->addAction(pasteAct);
     editToolBar->addAction(pasteAct);
 
     menuBar()->addSeparator();
 
+    //Compilador
+    QMenu *compilador_menu = menuBar()->addMenu(tr("Ferramentas"));
+    QToolBar *tool_bar_compilador = addToolBar(tr("Compilar"));
+
+    const QIcon icone_compilar = QIcon::fromTheme("document-save", QIcon(":/imagens/build.png"));
+    QAction *acao_compilar = new QAction(icone_compilar, tr("Compilar"), this);
+    //saveAct->setShortcuts(QKeySequence::Save);
+    //saveAct->setStatusTip(tr("Salvar documento"));
+    //connect(saveAct, &QAction::triggered, this, &TelaPrincipal::salve);
+    compilador_menu->addAction(acao_compilar);
+    tool_bar_compilador->addAction(acao_compilar);
+
 #endif // !QT_NO_CLIPBOARD
 
     QMenu *helpMenu = menuBar()->addMenu(tr("Ajuda"));
-    QAction *aboutAct = helpMenu->addAction(tr("Sobre"), this, &TelaPrincipal::sobre);
+    QAction *aboutAct = helpMenu->addAction(tr("Sobre"), this, &EditorDeTextoView::sobre);
     ////TODO: Refatorar essa parte abaixo
     aboutAct->setStatusTip(tr("Show the application's About box"));
 
@@ -172,17 +213,20 @@ void TelaPrincipal::crie_acoes()
 
     cutAct->setEnabled(false);
     copyAct->setEnabled(false);
-    connect(editor_de_texto, &QPlainTextEdit::copyAvailable, cutAct, &QAction::setEnabled);
-    connect(editor_de_texto, &QPlainTextEdit::copyAvailable, copyAct, &QAction::setEnabled);
+    connect(editorDeTexto, &QPlainTextEdit::copyAvailable, cutAct, &QAction::setEnabled);
+    connect(editorDeTexto, &QPlainTextEdit::copyAvailable, copyAct, &QAction::setEnabled);
 #endif // !QT_NO_CLIPBOARD
 }
 
-void TelaPrincipal::crie_barra_de_status()
+void EditorDeTextoView::crieBarraDeStatus()
 {
-    statusBar()->showMessage(tr("Ready"));
+    QStatusBar* barraDeStatus = statusBar();
+
+    controlador->setBarraDeStatus(barraDeStatus);
+    controlador->mostreMensagemNaBarraDeStatus(tr("Aberto!"));
 }
 
-void TelaPrincipal::leia_configuracoes()
+void EditorDeTextoView::leiaConfiguracoes()
 {
     QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
     const QByteArray geometry = settings.value("geometria", QByteArray()).toByteArray();
@@ -196,16 +240,16 @@ void TelaPrincipal::leia_configuracoes()
     }
 }
 
-void TelaPrincipal::escreva_configuracoes()
+void EditorDeTextoView::escrevaConfiguracoes()
 {
     QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
     settings.setValue("geometria", saveGeometry());
 }
 
-bool TelaPrincipal::talvez_salve()
+bool EditorDeTextoView::talvezSalve()
 {
     ////TODO: Refatorar essa parte abaixo
-    if (!editor_de_texto->document()->isModified())
+    if (!editorDeTexto->document()->isModified())
         return true;
     const QMessageBox::StandardButton ret
         = QMessageBox::warning(this, tr("Application"),
@@ -223,31 +267,13 @@ bool TelaPrincipal::talvez_salve()
     return true;
 }
 
-void TelaPrincipal::carregue_arquivo(const QString &nome_do_arquivo)
+void EditorDeTextoView::carregueArquivo(const QString &nomeDoArquivo)
 {
-    ////TODO: Refatorar essa parte abaixo
-    QFile file(nome_do_arquivo);
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        QMessageBox::warning(this, tr("Application"),
-                             tr("Cannot read file %1:\n%2.")
-                             .arg(QDir::toNativeSeparators(nome_do_arquivo), file.errorString()));
-        return;
-    }
+    controlador->carregueArquivo(nomeDoArquivo);
 
-    QTextStream in(&file);
-#ifndef QT_NO_CURSOR
-    QApplication::setOverrideCursor(Qt::WaitCursor);
-#endif
-    editor_de_texto->setPlainText(in.readAll());
-#ifndef QT_NO_CURSOR
-    QApplication::restoreOverrideCursor();
-#endif
-
-    set_arquivo_aberto(nome_do_arquivo);
-    statusBar()->showMessage(tr("File loaded"), 2000);
 }
 
-bool TelaPrincipal::salve_arquivo(const QString &nome_do_arquivo)
+bool EditorDeTextoView::salveArquivo(const QString &nome_do_arquivo)
 {
     ////TODO: Refatorar essa parte abaixo
     QFile file(nome_do_arquivo);
@@ -263,29 +289,33 @@ bool TelaPrincipal::salve_arquivo(const QString &nome_do_arquivo)
 #ifndef QT_NO_CURSOR
     QApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
-    out << editor_de_texto->toPlainText();
+    out << editorDeTexto->toPlainText();
 #ifndef QT_NO_CURSOR
     QApplication::restoreOverrideCursor();
 #endif
 
-    set_arquivo_aberto(nome_do_arquivo);
+    setArquivoAberto(nome_do_arquivo);
     statusBar()->showMessage(tr("File saved"), 2000);
     return true;
 }
 
-void TelaPrincipal::set_arquivo_aberto(const QString &nome_do_arquivo)
+void EditorDeTextoView::setArquivoAberto(const QString &nome_do_arquivo)
 {
     arquivo_aberto = nome_do_arquivo;
-    editor_de_texto->document()->setModified(false);
+    editorDeTexto->document()->setModified(false);
+
     setWindowModified(false);
 
     QString shownName = arquivo_aberto;
     if (arquivo_aberto.isEmpty())
+    {
         shownName = "sem-titulo.txt";
+    }
+
     setWindowFilePath(shownName);
 }
 
-QString TelaPrincipal::strippedName(const QString &nome_completo_do_arquivo)
+QString EditorDeTextoView::strippedName(const QString &nome_completo_do_arquivo)
 {
     return QFileInfo(nome_completo_do_arquivo).fileName();
 }

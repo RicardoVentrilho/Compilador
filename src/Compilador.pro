@@ -10,16 +10,18 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Compilador
 TEMPLATE = app
+LIBS += -lfl -ly
 
+FLEXSOURCES = negocio/lexico/lexico.l
+BISONSOURCES = negocio/sintatico/sintatico.y
 
-SOURCES += main.cpp\
-    tela/telaprincipal.cpp
+SOURCES += main.cpp \
+    tela/editordetextoview.cpp \
+    controladores/editordetextocontroller.cpp
 
-HEADERS  += tela/telaprincipal.h
-
-FORMS    +=
-
-DISTFILES +=
+HEADERS  += \
+    tela/editordetextoview.h \
+    controladores/editordetextocontroller.h
 
 RESOURCES += \
     recursos.qrc
