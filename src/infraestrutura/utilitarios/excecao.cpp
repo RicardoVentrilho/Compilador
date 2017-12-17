@@ -2,15 +2,15 @@
 
 infraestrutura::Excecao::Excecao(string mensagem)
 {
-    set_mensagem(mensagem);
+    setMensagem(mensagem);
 }
 
-string infraestrutura::Excecao::get_mensagem()
+string infraestrutura::Excecao::getMensagem()
 {
-    return _mensagem;
+    return mensagem;
 }
 
-void infraestrutura::Excecao::set_mensagem(string mensagem)
+void infraestrutura::Excecao::setMensagem(string mensagem)
 {
-    _mensagem = mensagem;
+    this->mensagem = mensagem;
 }

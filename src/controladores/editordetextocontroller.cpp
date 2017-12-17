@@ -39,7 +39,7 @@ void controladores::EditorDeTextoController::compile(QString texto)
         ////TODO: Adicionar no PlainEditText o erro da compilação
         QMessageBox::about(editorDeTextoView,
                            QString("Erro na compilação"),
-                           QString(erro->get_mensagem().c_str()));
+                           QString(erro->getMensagem().c_str()));
 
         return;
     }
