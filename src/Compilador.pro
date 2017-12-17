@@ -18,26 +18,22 @@ BISONSOURCES = negocio/sintatico/sintatico.y
 SOURCES += main.cpp \
     tela/editordetextoview.cpp \
     controladores/editordetextocontroller.cpp \
-    negocio/Objeto.cpp \
-    negocio/Estado.cpp \
-    negocio/Tabela.cpp \
-    negocio/Validacao.cpp \
-    negocio/Objeto.cpp \
-    negocio/Tabela.cpp \
-    negocio/Validacao.cpp \
-    negocio/Estado.cpp
+    negocio/estado.cpp \
+    negocio/objeto.cpp \
+    negocio/tabela.cpp \
+    negocio/validacao.cpp \
+    negocio/compiladorportugolparac.cpp \
+    infraestrutura/utilitarios/excecao.cpp
 
 HEADERS  += \
     tela/editordetextoview.h \
     controladores/editordetextocontroller.h \
-    negocio/Objeto.h \
-    negocio/Estado.h \
-    negocio/Tabela.h \
-    negocio/Validacao.h \
-    negocio/Estado.h \
-    negocio/Objeto.h \
-    negocio/Tabela.h \
-    negocio/Validacao.h
+    negocio/estado.h \
+    negocio/objeto.h \
+    negocio/tabela.h \
+    negocio/validacao.h \
+    negocio/compiladorportugolparac.h \
+    infraestrutura/utilitarios/excecao.h
 
 RESOURCES += \
     recursos.qrc

@@ -5,7 +5,8 @@ controladores::EditorDeTextoController::EditorDeTextoController(QWidget* editorD
                                                                 QString arquivoAtual)
     : editorDeTextoView(editorDeTextoView),
       arquivoAtual(arquivoAtual),
-      campoTexto(campoTexto)
+      campoTexto(campoTexto),
+      compilador(new CompiladorPortugolParaC())
 {
 }
 
@@ -13,6 +14,7 @@ controladores::EditorDeTextoController::~EditorDeTextoController()
 {
     delete editorDeTextoView;
     delete campoTexto;
+    delete compilador;
 }
 
 void controladores::EditorDeTextoController::aoFechar(QCloseEvent *event)
@@ -28,11 +30,23 @@ void controladores::EditorDeTextoController::aoFechar(QCloseEvent *event)
 
 void controladores::EditorDeTextoController::compile(QString texto)
 {
-    cout << texto.toStdString() << endl;
+    try
+    {
+        compilador->compile(texto);
+    }
+    catch(Excecao* erro)
+    {
+        ////TODO: Adicionar no PlainEditText o erro da compilação
+        QMessageBox::about(editorDeTextoView,
+                           QString("Erro na compilação"),
+                           QString(erro->get_mensagem().c_str()));
+
+        return;
+    }
 
     QMessageBox::about(editorDeTextoView,
-                       QString("Sobre este compilador!"),
-                       QString("Compilador em desenvolvimento..."));
+                       QString("Sucesso na compilação"),
+                       QString("Programa %1 compilado com sucesso!").arg(arquivoAtual));
 }
 
 void controladores::EditorDeTextoController::sobre()
