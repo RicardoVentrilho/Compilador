@@ -35,6 +35,7 @@ private slots:
 private:
     const int ALTURA_RESULTADO_DA_COMPILACAO = 100;
 
+    void crieConexaoComAlteracoes();
     void crieMenuComAcoes();
     void crieBarraDeStatus();
     void leiaConfiguracoes();
@@ -48,7 +49,6 @@ private:
 
     QPlainTextEdit *campoTexto, *resultadoDaCompilacao;
     QString arquivoAtual;
-
     EditorDeTextoController* controlador;
 };
 }

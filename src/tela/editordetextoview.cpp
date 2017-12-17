@@ -12,12 +12,10 @@ tela::EditorDeTextoView::EditorDeTextoView()
 
     crieMenuComAcoes();
     crieBarraDeStatus();
-    leiaConfiguracoes();
+    crieConexaoComAlteracoes();
 
-    connect(campoTexto->document(),
-            &QTextDocument::contentsChanged,
-            this,
-            &tela::EditorDeTextoView::arquivoFoiModificado);
+    definaConfiguracoes();
+    leiaConfiguracoes();
 
     setArquivoAtual(QString());
     setUnifiedTitleAndToolBarOnMac(true);
@@ -91,6 +89,14 @@ void tela::EditorDeTextoView::compile()
     auto texto = campoTexto->toPlainText();
 
     controlador->compile(texto);
+}
+
+void tela::EditorDeTextoView::crieConexaoComAlteracoes()
+{
+    connect(campoTexto->document(),
+            &QTextDocument::contentsChanged,
+            this,
+            &tela::EditorDeTextoView::arquivoFoiModificado);
 }
 
 void tela::EditorDeTextoView::criMenuComAcoesDeArquivo()
@@ -179,6 +185,9 @@ void tela::EditorDeTextoView::leiaConfiguracoes()
 
 void tela::EditorDeTextoView::definaConfiguracoes()
 {
+    setMinimumHeight(600);
+    setMinimumWidth(600);
+
     controlador->definaConfiguracoes();
 }
 
