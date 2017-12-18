@@ -4,17 +4,21 @@
 #include <QString>
 #include <QStringList>
 #include "estado.h"
+#include "analisadorlexico.h"
 
 namespace negocio
 {
-class CompiladorPortugolParaC
+class CompiladorPortugol
 {
 public:
-    CompiladorPortugolParaC();
+    CompiladorPortugol();
     void compile(QString texto);
+    QStringList separeLinhas(QString texto);
+    QStringList separeTokens(QString texto);
 
 private:
     Estado* estadoInicial;
+    AnalisadorLexico* analisadorLexico;
 };
 }
 

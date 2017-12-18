@@ -16,12 +16,12 @@
 #include <QMenuBar>
 #include <QApplication>
 #include <QToolBar>
-#include "negocio/compiladorportugolparac.h"
+#include "negocio/compiladorportugol.h"
 #include "infraestrutura/utilitarios/excecao.h"
 
 using std::cout;
 using std::endl;
-using negocio::CompiladorPortugolParaC;
+using negocio::CompiladorPortugol;
 using infraestrutura::Excecao;
 
 namespace controladores
@@ -69,7 +69,7 @@ private:
     QWidget* editorDeTextoView;
     QString arquivoAtual;
     QPlainTextEdit* campoTexto;
-    CompiladorPortugolParaC* compilador;
+    CompiladorPortugol* compilador;
 };
 
 }

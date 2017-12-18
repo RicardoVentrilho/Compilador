@@ -6,7 +6,7 @@ controladores::EditorDeTextoController::EditorDeTextoController(QWidget* editorD
     : editorDeTextoView(editorDeTextoView),
       arquivoAtual(arquivoAtual),
       campoTexto(campoTexto),
-      compilador(new CompiladorPortugolParaC())
+      compilador(new CompiladorPortugol())
 {
 }
 

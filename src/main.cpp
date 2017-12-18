@@ -1,5 +1,4 @@
 #include "tela/editordetextoview.h"
-#include <QApplication>
 
 using tela::EditorDeTextoView;
 
