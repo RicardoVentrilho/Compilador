@@ -4,8 +4,8 @@
 #include <QString>
 #include <QStringList>
 #include "estado.h"
-#include "analisadorlexico.h"
-#include "analisadorsemantico.h"
+#include "analisadorlexicoportugol.h"
+#include "analisadorsemanticoportugol.h"
 
 namespace negocio
 {
@@ -17,9 +17,9 @@ public:
     QStringList separeLinhas(QString texto);
 
 private:
-    TabelaDeSimbolos* tabelaDeSimbolos;
-    AnalisadorLexico* analisadorLexico;
-    AnalisadorSemantico* analisadorSemantico;
+    TabelaDeSimbolosPortugol* tabelaDeSimbolos;
+    AnalisadorLexicoPortugol* analisadorLexico;
+    AnalisadorSemanticoPortugol* analisadorSemantico;
 };
 }
 

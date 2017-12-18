@@ -10,10 +10,10 @@ using std::map;
 
 namespace negocio
 {
-class TabelaDeSimbolos
+class TabelaDeSimbolosPortugol
 {
 public:
-    TabelaDeSimbolos();
+    TabelaDeSimbolosPortugol();
     EnumToken getTipo(QString palavra);
 
 private:

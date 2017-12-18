@@ -2,9 +2,9 @@
 
 negocio::CompiladorPortugol::CompiladorPortugol()
 {
-    tabelaDeSimbolos = new TabelaDeSimbolos();
-    analisadorLexico = new AnalisadorLexico(tabelaDeSimbolos);
-    analisadorSemantico = new AnalisadorSemantico();
+    tabelaDeSimbolos = new TabelaDeSimbolosPortugol();
+    analisadorLexico = new AnalisadorLexicoPortugol(tabelaDeSimbolos);
+    analisadorSemantico = new AnalisadorSemanticoPortugol();
 }
 
 void negocio::CompiladorPortugol::compile(QString texto)

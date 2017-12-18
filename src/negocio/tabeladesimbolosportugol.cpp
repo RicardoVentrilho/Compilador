@@ -1,6 +1,6 @@
-#include "tabeladesimbolos.h"
+#include "tabeladesimbolosportugol.h"
 
-negocio::TabelaDeSimbolos::TabelaDeSimbolos()
+negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
 {
     dicionario =
     {
@@ -11,7 +11,7 @@ negocio::TabelaDeSimbolos::TabelaDeSimbolos()
     };
 }
 
-enumeradores::EnumToken negocio::TabelaDeSimbolos::getTipo(QString palavra)
+enumeradores::EnumToken negocio::TabelaDeSimbolosPortugol::getTipo(QString palavra)
 {
     if (dicionario.find(palavra) == dicionario.end())
     {

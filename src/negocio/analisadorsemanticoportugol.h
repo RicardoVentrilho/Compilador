@@ -2,17 +2,17 @@
 #define ANALISADORSEMANTICO_H
 
 #include <vector>
-#include "token.h"
+#include "tokenportugol.h"
 
 using std::vector;
 
 namespace negocio
 {
-class AnalisadorSemantico
+class AnalisadorSemanticoPortugol
 {
 public:
-    AnalisadorSemantico();
-    void valideSequenciaDeTokens(vector<Token*> tokens);
+    AnalisadorSemanticoPortugol();
+    void valideSequenciaDeTokens(vector<TokenPortugol*> tokens);
 };
 }
 

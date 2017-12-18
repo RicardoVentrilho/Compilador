@@ -8,10 +8,10 @@ using enumeradores::EnumToken;
 
 namespace negocio
 {
-class Token
+class TokenPortugol
 {
 public:
-    Token(QString valor, EnumToken tipo);
+    TokenPortugol(QString valor, EnumToken tipo);
     void setValor(QString valor);
     void setTipo(EnumToken tipo);
     QString getValor();
