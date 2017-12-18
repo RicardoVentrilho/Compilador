@@ -9,7 +9,9 @@ negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
         TokenPortugol(QString("="), EnumToken::OPERADOR_ATRIBUICAO),
         TokenPortugol(QString(","), EnumToken::OPERADOR_SEPARADOR),
         TokenPortugol(QString("[0-9]{0,30}"), EnumToken::NUMERO),
-        TokenPortugol(QString("^([a-Z])([a-Z][0-9]$)*"), EnumToken::ID)
+        TokenPortugol(QString("^([a-Z])([a-Z][0-9]$)*"), EnumToken::ID),
+        TokenPortugol(QString("se|senao"), EnumToken::OPERADOR_LOGICO),
+        TokenPortugol(QString(">|<|>=|<=|!="), EnumToken::OPERADOR_ARITMETICO)
     };
 }
 
