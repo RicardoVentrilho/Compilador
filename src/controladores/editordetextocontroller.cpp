@@ -1,19 +1,19 @@
 #include "editordetextocontroller.h"
 
-controladores::EditorDeTextoController::EditorDeTextoController(QWidget* editorDeTextoView,
-                                                                QPlainTextEdit* campoTexto,
+controladores::EditorDeTextoController::EditorDeTextoController(QWidget *editorDeTextoView,
+                                                                QPlainTextEdit *campoTexto,
+                                                                QPlainTextEdit *resultadoCompilacao,
                                                                 QString arquivoAtual)
     : editorDeTextoView(editorDeTextoView),
       arquivoAtual(arquivoAtual),
       campoTexto(campoTexto),
+      resultadoCompilacao(resultadoCompilacao),
       compilador(new CompiladorPortugol())
 {
 }
 
 controladores::EditorDeTextoController::~EditorDeTextoController()
 {
-    delete editorDeTextoView;
-    delete campoTexto;
     delete compilador;
 }
 
@@ -30,23 +30,21 @@ void controladores::EditorDeTextoController::aoFechar(QCloseEvent *event)
 
 void controladores::EditorDeTextoController::compile(QString texto)
 {
+    resultadoCompilacao->clear();
+
     try
     {
         compilador->compile(texto);
     }
     catch(Excecao* erro)
     {
-        ////TODO: Adicionar no PlainEditText o erro da compilação
-        QMessageBox::about(editorDeTextoView,
-                           QString("Erro na compilação"),
-                           QString(erro->getMensagem().c_str()));
+        resultadoCompilacao->insertPlainText(erro->getMensagem().c_str());
 
         return;
     }
 
-    QMessageBox::about(editorDeTextoView,
-                       QString("Sucesso na compilação"),
-                       QString("Programa %1 compilado com sucesso!").arg(arquivoAtual));
+    auto mensagem = QString("Programa %1 compilado com sucesso!").arg(arquivoAtual);
+    resultadoCompilacao->insertPlainText(mensagem);
 }
 
 void controladores::EditorDeTextoController::sobre()

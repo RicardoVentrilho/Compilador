@@ -8,7 +8,7 @@ tela::EditorDeTextoView::EditorDeTextoView()
 {
     monteLayout();
 
-    controlador = new EditorDeTextoController(this, campoTexto, arquivoAtual);
+    controlador = new EditorDeTextoController(this, campoTexto, resultadoDaCompilacao, arquivoAtual);
 
     crieMenuComAcoes();
     crieBarraDeStatus();
@@ -37,7 +37,7 @@ void tela::EditorDeTextoView::monteLayout()
     resultadoDaCompilacao->setMaximumHeight(ALTURA_RESULTADO_DA_COMPILACAO);
 
     resultadoDaCompilacao->setReadOnly(true);
-    resultadoDaCompilacao->insertPlainText("COMPILADOR EM DESENVOLVIMENTO...");
+    resultadoDaCompilacao->insertPlainText("");
 
     layout->addWidget(resultadoDaCompilacao);
 

@@ -30,7 +30,7 @@ namespace controladores
 class EditorDeTextoController : public QObjectData
 {
 public:
-    EditorDeTextoController(QWidget* editorDeTextoView, QPlainTextEdit* campoTexto, QString arquivoAtual = QString());
+    EditorDeTextoController(QWidget* editorDeTextoView, QPlainTextEdit* campoTexto, QPlainTextEdit* resultadoCompilacao, QString arquivoAtual = QString());
     ~EditorDeTextoController();
 
     void aoFechar(QCloseEvent *event);
@@ -69,6 +69,7 @@ private:
     QWidget* editorDeTextoView;
     QString arquivoAtual;
     QPlainTextEdit* campoTexto;
+    QPlainTextEdit* resultadoCompilacao;
     CompiladorPortugol* compilador;
 };
 
