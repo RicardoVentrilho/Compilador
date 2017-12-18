@@ -16,12 +16,18 @@ void negocio::CompiladorPortugol::compile(QString texto)
     {
         auto tokens = analisadorLexico->crieTokens(linha);
 
+        if(tokens.size() == 0)
+        {
+            continue;
+        }
+
         analisadorSintatico->valide(tokens);
 
         tradutor->adicioneTokens(tokens);
         tradutor->adicioneTokenFinalDeLinha();
     }
 
+    tradutor->traduza();
     tradutor->imprima();
 }
 

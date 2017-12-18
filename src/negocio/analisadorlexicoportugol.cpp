@@ -12,6 +12,8 @@ vector<negocio::TokenPortugol*> negocio::AnalisadorLexicoPortugol::crieTokens(QS
 
     auto palavras = linha.split(expressaoRegular);
 
+    palavras = removaDelimitadores(palavras);
+
     for (auto palavra : palavras)
     {
         auto tipo = tabelaDeSimbolos->getTipo(palavra);
@@ -20,5 +22,22 @@ vector<negocio::TokenPortugol*> negocio::AnalisadorLexicoPortugol::crieTokens(QS
     }
 
     return tokens;
+}
+
+QStringList negocio::AnalisadorLexicoPortugol::removaDelimitadores(QStringList palavras)
+{
+    QStringList resultado;
+
+    for (auto palavra : palavras)
+    {
+        if (palavra == QString(""))
+        {
+           continue;
+        }
+
+        resultado.push_back(palavra);
+    }
+
+    return resultado;
 }
 

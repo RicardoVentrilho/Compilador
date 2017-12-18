@@ -5,6 +5,7 @@ negocio::AnalisadorSintaticoPortugol::AnalisadorSintaticoPortugol(TabelaDeSimbol
 {
     regras =
     {
+        { EnumToken::PALAVRA_RESERVADA },
         { EnumToken::VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NUMERO }
     };
 }
@@ -33,7 +34,7 @@ bool negocio::AnalisadorSintaticoPortugol::valideRegraComSequenciaDeTokens(vecto
 {
     auto contador = 0;
 
-    while ((contador < regra.size() ||
+    while ((contador < regra.size() &&
             contador < tokens.size()) &&
             regra[contador] == tokens[contador])
     {
