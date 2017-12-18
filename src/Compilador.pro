@@ -25,9 +25,10 @@ SOURCES += main.cpp \
     infraestrutura/utilitarios/excecao.cpp \
     negocio/compiladorportugol.cpp \
     negocio/analisadorlexicoportugol.cpp \
-    negocio/analisadorsemanticoportugol.cpp \
     negocio/tabeladesimbolosportugol.cpp \
-    negocio/tokenportugol.cpp
+    negocio/tokenportugol.cpp \
+    negocio/analisadorsintaticoportugol.cpp \
+    negocio/tradutorportugolparac.cpp
 
 HEADERS  += \
     tela/editordetextoview.h \
@@ -40,9 +41,10 @@ HEADERS  += \
     enumeradores/enumtoken.h \
     negocio/compiladorportugol.h \
     negocio/analisadorlexicoportugol.h \
-    negocio/analisadorsemanticoportugol.h \
     negocio/tabeladesimbolosportugol.h \
-    negocio/tokenportugol.h
+    negocio/tokenportugol.h \
+    negocio/analisadorsintaticoportugol.h \
+    negocio/tradutorportugolparac.h
 
 RESOURCES += \
     recursos.qrc

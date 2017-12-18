@@ -11,7 +11,9 @@ enum EnumToken
     OPERADOR_ATRIBUICAO,
     DELIMITADOR,
     OPERADOR_SEPARADOR,
-    ID
+    ID,
+    FINAL_DE_LINHA,
+    NUMERO
 };
 
 }

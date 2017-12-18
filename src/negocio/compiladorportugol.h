@@ -5,7 +5,8 @@
 #include <QStringList>
 #include "estado.h"
 #include "analisadorlexicoportugol.h"
-#include "analisadorsemanticoportugol.h"
+#include "analisadorsintaticoportugol.h"
+#include "tradutorportugolparac.h"
 
 namespace negocio
 {
@@ -19,7 +20,8 @@ public:
 private:
     TabelaDeSimbolosPortugol* tabelaDeSimbolos;
     AnalisadorLexicoPortugol* analisadorLexico;
-    AnalisadorSemanticoPortugol* analisadorSemantico;
+    AnalisadorSintaticoPortugol* analisadorSintatico;
+    TradutorPortugolParaC* tradutor;
 };
 }
 

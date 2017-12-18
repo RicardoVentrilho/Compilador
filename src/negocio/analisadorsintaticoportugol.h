@@ -8,10 +8,10 @@ using std::vector;
 
 namespace negocio
 {
-class AnalisadorSemanticoPortugol
+class AnalisadorSintaticoPortugol
 {
 public:
-    AnalisadorSemanticoPortugol();
+    AnalisadorSintaticoPortugol();
     void valideSequenciaDeTokens(vector<TokenPortugol*> tokens);
 };
 }

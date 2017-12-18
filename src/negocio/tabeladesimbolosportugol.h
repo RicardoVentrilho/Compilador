@@ -19,6 +19,7 @@ public:
     TabelaDeSimbolosPortugol();
     EnumToken getTipo(QString palavra);
     bool ehId(QString palavra);
+    bool ehNumero(QString palavra);
 
 private:
     map<QString, EnumToken> dicionario;

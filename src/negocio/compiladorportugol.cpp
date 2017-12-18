@@ -4,7 +4,8 @@ negocio::CompiladorPortugol::CompiladorPortugol()
 {
     tabelaDeSimbolos = new TabelaDeSimbolosPortugol();
     analisadorLexico = new AnalisadorLexicoPortugol(tabelaDeSimbolos);
-    analisadorSemantico = new AnalisadorSemanticoPortugol();
+    analisadorSintatico = new AnalisadorSintaticoPortugol();
+    tradutor = new TradutorPortugolParaC();
 }
 
 void negocio::CompiladorPortugol::compile(QString texto)
@@ -15,8 +16,13 @@ void negocio::CompiladorPortugol::compile(QString texto)
     {
         auto tokens = analisadorLexico->crieTokens(linha);
 
-        analisadorSemantico->valideSequenciaDeTokens(tokens);
+        analisadorSintatico->valideSequenciaDeTokens(tokens);
+
+        tradutor->adicioneTokens(tokens);
+        tradutor->adicioneTokenFinalDeLinha();
     }
+
+    tradutor->imprima();
 }
 
 QStringList negocio::CompiladorPortugol::separeLinhas(QString texto)
