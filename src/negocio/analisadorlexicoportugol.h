@@ -17,6 +17,7 @@ class AnalisadorLexicoPortugol
 public:
     AnalisadorLexicoPortugol(TabelaDeSimbolosPortugol* tabelaDeSimbolos);
     vector<TokenPortugol *> crieTokens(QString linha);
+    QStringList removaDelimitadores(QStringList palavras);
 
 private:
     TabelaDeSimbolosPortugol* tabelaDeSimbolos;

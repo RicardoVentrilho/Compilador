@@ -1,5 +1,2 @@
-fasdfasdfasdfasd
-ajfksdjfçakjsdf
-asdfasdjflasdjfklasdf
-asdf
-augusto
+programa;
+var = 0;
