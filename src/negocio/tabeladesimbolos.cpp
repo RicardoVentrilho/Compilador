@@ -13,6 +13,11 @@ negocio::TabelaDeSimbolos::TabelaDeSimbolos()
 
 enumeradores::EnumToken negocio::TabelaDeSimbolos::getTipo(QString palavra)
 {
-    ////TODO: Validar se existe palavra no dicionario
+    if (dicionario.find(palavra) == dicionario.end())
+    {
+        ////TODO: Validar id;
+        return EnumToken::ID;
+    }
+
     return dicionario.at(palavra);
 }

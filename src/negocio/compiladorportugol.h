@@ -5,6 +5,7 @@
 #include <QStringList>
 #include "estado.h"
 #include "analisadorlexico.h"
+#include "analisadorsemantico.h"
 
 namespace negocio
 {
@@ -14,11 +15,11 @@ public:
     CompiladorPortugol();
     void compile(QString texto);
     QStringList separeLinhas(QString texto);
-    QStringList separeTokens(QString texto);
 
 private:
-    Estado* estadoInicial;
+    TabelaDeSimbolos* tabelaDeSimbolos;
     AnalisadorLexico* analisadorLexico;
+    AnalisadorSemantico* analisadorSemantico;
 };
 }
 

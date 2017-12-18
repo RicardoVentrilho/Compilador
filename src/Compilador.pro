@@ -26,7 +26,8 @@ SOURCES += main.cpp \
     negocio/analisadorlexico.cpp \
     negocio/token.cpp \
     negocio/compiladorportugol.cpp \
-    negocio/tabeladesimbolos.cpp
+    negocio/tabeladesimbolos.cpp \
+    negocio/analisadorsemantico.cpp
 
 HEADERS  += \
     tela/editordetextoview.h \
@@ -40,7 +41,8 @@ HEADERS  += \
     negocio/token.h \
     enumeradores/enumtoken.h \
     negocio/compiladorportugol.h \
-    negocio/tabeladesimbolos.h
+    negocio/tabeladesimbolos.h \
+    negocio/analisadorsemantico.h
 
 RESOURCES += \
     recursos.qrc

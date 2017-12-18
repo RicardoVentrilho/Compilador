@@ -1,7 +1,7 @@
 #include "analisadorlexico.h"
 
-negocio::AnalisadorLexico::AnalisadorLexico()
-    : tabelaDeSimbolos(new TabelaDeSimbolos())
+negocio::AnalisadorLexico::AnalisadorLexico(TabelaDeSimbolos *tabelaDeSimbolos)
+    : tabelaDeSimbolos(tabelaDeSimbolos)
 {
 }
 

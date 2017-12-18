@@ -15,7 +15,7 @@ namespace negocio
 class AnalisadorLexico
 {
 public:
-    AnalisadorLexico();
+    AnalisadorLexico(TabelaDeSimbolos* tabelaDeSimbolos);
     vector<Token *> crieTokens(QString linha);
 
 private:

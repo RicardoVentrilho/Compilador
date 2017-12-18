@@ -2,8 +2,9 @@
 
 negocio::CompiladorPortugol::CompiladorPortugol()
 {
-    //estadoInicial = new Estado();
-    analisadorLexico = new AnalisadorLexico();
+    tabelaDeSimbolos = new TabelaDeSimbolos();
+    analisadorLexico = new AnalisadorLexico(tabelaDeSimbolos);
+    analisadorSemantico = new AnalisadorSemantico();
 }
 
 void negocio::CompiladorPortugol::compile(QString texto)
@@ -12,24 +13,15 @@ void negocio::CompiladorPortugol::compile(QString texto)
 
     for (auto linha : linhas)
     {
-        //auto tokens = separeTokens(linha);
-
         auto tokens = analisadorLexico->crieTokens(linha);
 
-        //analisadorSemantico->valideSequenciaDeTokens(tokens);
+        analisadorSemantico->valideSequenciaDeTokens(tokens);
     }
 }
 
 QStringList negocio::CompiladorPortugol::separeLinhas(QString texto)
 {
     QRegExp expressaoRegular("*;");
-
-    return texto.split(expressaoRegular);
-}
-
-QStringList negocio::CompiladorPortugol::separeTokens(QString texto)
-{
-    QRegExp expressaoRegular("(\\ |\\n|\\t)");
 
     return texto.split(expressaoRegular);
 }
