@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <map>
+#include "tabeladesimbolosportugol.h"
 #include "tokenportugol.h"
 #include "infraestrutura/utilitarios/excecao.h"
 
@@ -15,12 +16,13 @@ namespace negocio
 class AnalisadorSintaticoPortugol
 {
 public:
-    AnalisadorSintaticoPortugol();
-    void valideSequenciaDeTokens(vector<TokenPortugol*> tokens);
+    AnalisadorSintaticoPortugol(TabelaDeSimbolosPortugol* tabelaDeSimbolos);
+    void valide(vector<TokenPortugol*> tokens);
 
 private:
     bool valideRegraComSequenciaDeTokens(vector<EnumToken> regra, vector<EnumToken> tokens);
     vector<vector<EnumToken>> regras;
+    TabelaDeSimbolosPortugol* tabelaDeSimbolos;
 };
 }
 

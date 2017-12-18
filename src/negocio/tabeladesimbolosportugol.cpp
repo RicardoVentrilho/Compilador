@@ -2,28 +2,28 @@
 
 negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
 {
-    dicionario =
+    tabela =
     {
-        { QString("programa"), EnumToken::PALAVRA_RESERVADA },
-        { QString("var"), EnumToken::VARIAVEL },
-        { QString("="), EnumToken::OPERADOR_ATRIBUICAO },
-        { QString(","), EnumToken::OPERADOR_SEPARADOR },
-        { QString("[0-9]{0,30}"), EnumToken::NUMERO },
-        { QString("^([a-Z])([a-Z][0-9]$)*"), EnumToken::ID }
+        TokenPortugol(QString("programa"), EnumToken::PALAVRA_RESERVADA),
+        TokenPortugol(QString("var"), EnumToken::VARIAVEL),
+        TokenPortugol(QString("="), EnumToken::OPERADOR_ATRIBUICAO),
+        TokenPortugol(QString(","), EnumToken::OPERADOR_SEPARADOR),
+        TokenPortugol(QString("[0-9]{0,30}"), EnumToken::NUMERO),
+        TokenPortugol(QString("^([a-Z])([a-Z][0-9]$)*"), EnumToken::ID)
     };
 }
 
 enumeradores::EnumToken negocio::TabelaDeSimbolosPortugol::getTipo(QString palavra)
 {
-    for (pair<QString, EnumToken> regra : dicionario)
+    for (auto regra : tabela)
     {
-        QRegExp expressaoRegular(regra.first);
+        QRegExp expressaoRegular(regra.getValor());
 
-        auto ehValido = expressaoRegular.isValid();
+        auto ehValido = expressaoRegular.exactMatch(palavra);
 
         if (ehValido)
         {
-            return regra.second;
+            return regra.getTipo();
         }
     }
 

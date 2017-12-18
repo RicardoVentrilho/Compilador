@@ -4,7 +4,7 @@ negocio::CompiladorPortugol::CompiladorPortugol()
 {
     tabelaDeSimbolos = new TabelaDeSimbolosPortugol();
     analisadorLexico = new AnalisadorLexicoPortugol(tabelaDeSimbolos);
-    analisadorSintatico = new AnalisadorSintaticoPortugol();
+    analisadorSintatico = new AnalisadorSintaticoPortugol(tabelaDeSimbolos);
     tradutor = new TradutorPortugolParaC();
 }
 
@@ -16,7 +16,7 @@ void negocio::CompiladorPortugol::compile(QString texto)
     {
         auto tokens = analisadorLexico->crieTokens(linha);
 
-        analisadorSintatico->valideSequenciaDeTokens(tokens);
+        analisadorSintatico->valide(tokens);
 
         tradutor->adicioneTokens(tokens);
         tradutor->adicioneTokenFinalDeLinha();

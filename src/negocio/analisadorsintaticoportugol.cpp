@@ -1,6 +1,7 @@
 #include "analisadorsintaticoportugol.h"
 
-negocio::AnalisadorSintaticoPortugol::AnalisadorSintaticoPortugol()
+negocio::AnalisadorSintaticoPortugol::AnalisadorSintaticoPortugol(TabelaDeSimbolosPortugol *tabelaDeSimbolos)
+    : tabelaDeSimbolos(tabelaDeSimbolos)
 {
     regras =
     {
@@ -8,7 +9,7 @@ negocio::AnalisadorSintaticoPortugol::AnalisadorSintaticoPortugol()
     };
 }
 
-void negocio::AnalisadorSintaticoPortugol::valideSequenciaDeTokens(vector<negocio::TokenPortugol *> tokens)
+void negocio::AnalisadorSintaticoPortugol::valide(vector<negocio::TokenPortugol *> tokens)
 {
     vector<EnumToken> sequenciaDeTokens;
 
@@ -19,8 +20,7 @@ void negocio::AnalisadorSintaticoPortugol::valideSequenciaDeTokens(vector<negoci
 
     for (auto regra : regras)
     {
-        ////Validar token a token
-        if (regra == sequenciaDeTokens)
+        if (valideRegraComSequenciaDeTokens(regra, sequenciaDeTokens))
         {
             return;
         }
@@ -31,5 +31,14 @@ void negocio::AnalisadorSintaticoPortugol::valideSequenciaDeTokens(vector<negoci
 
 bool negocio::AnalisadorSintaticoPortugol::valideRegraComSequenciaDeTokens(vector<enumeradores::EnumToken> regra, vector<enumeradores::EnumToken> tokens)
 {
-    return false;
+    auto contador = 0;
+
+    while ((contador < regra.size() ||
+            contador < tokens.size()) &&
+            regra[contador] == tokens[contador])
+    {
+        contador++;
+    }
+
+    return contador == regra.size() && contador == tokens.size();
 }

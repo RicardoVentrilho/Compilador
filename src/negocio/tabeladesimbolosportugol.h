@@ -1,16 +1,16 @@
 #ifndef TABELADESIMBOLOS_H
 #define TABELADESIMBOLOS_H
 
-#include <map>
+#include <vector>
 #include <QString>
 #include <QRegExp>
 #include "enumeradores/enumtoken.h"
 #include "infraestrutura/utilitarios/excecao.h"
+#include "tokenportugol.h"
 
 using infraestrutura::Excecao;
 using enumeradores::EnumToken;
-using std::map;
-using std::pair;
+using std::vector;
 
 namespace negocio
 {
@@ -21,7 +21,7 @@ public:
     EnumToken getTipo(QString palavra);
 
 private:
-    map<QString, EnumToken> dicionario;
+    vector<TokenPortugol> tabela;
 };
 }
 
