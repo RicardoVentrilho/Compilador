@@ -10,6 +10,7 @@
 using infraestrutura::Excecao;
 using enumeradores::EnumToken;
 using std::map;
+using std::pair;
 
 namespace negocio
 {
@@ -18,8 +19,6 @@ class TabelaDeSimbolosPortugol
 public:
     TabelaDeSimbolosPortugol();
     EnumToken getTipo(QString palavra);
-    bool ehId(QString palavra);
-    bool ehNumero(QString palavra);
 
 private:
     map<QString, EnumToken> dicionario;

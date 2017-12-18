@@ -27,7 +27,7 @@ void negocio::CompiladorPortugol::compile(QString texto)
 
 QStringList negocio::CompiladorPortugol::separeLinhas(QString texto)
 {
-    QRegExp expressaoRegular("*;");
+    QRegExp expressaoRegular("(\\;)");
 
     return texto.split(expressaoRegular);
 }
