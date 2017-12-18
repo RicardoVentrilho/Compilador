@@ -7,6 +7,7 @@
 #include "tokenportugol.h"
 #include "infraestrutura/utilitarios/excecao.h"
 
+
 using std::vector;
 using std::map;
 using infraestrutura::Excecao;
