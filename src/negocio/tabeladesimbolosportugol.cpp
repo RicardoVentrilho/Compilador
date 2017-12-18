@@ -15,9 +15,21 @@ enumeradores::EnumToken negocio::TabelaDeSimbolosPortugol::getTipo(QString palav
 {
     if (dicionario.find(palavra) == dicionario.end())
     {
-        ////TODO: Validar id;
-        return EnumToken::ID;
+        if (ehId(palavra))
+        {
+            return EnumToken::ID;
+        }
+
+        throw new Excecao(QString("%1 incorreto.").arg(palavra).toStdString());
     }
 
     return dicionario.at(palavra);
+}
+
+bool negocio::TabelaDeSimbolosPortugol::ehId(QString palavra)
+{
+    ////TODO: Arrumar variavel aqui kkk
+    QRegExp expressaoRegular("^([a-Z])([a-Z][0-9]$)*");
+
+    return expressaoRegular.exactMatch(palavra);
 }
