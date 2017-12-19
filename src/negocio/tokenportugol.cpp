@@ -1,5 +1,10 @@
 #include "tokenportugol.h"
 
+negocio::TokenPortugol::TokenPortugol(QString valor, enumeradores::EnumToken tipo)
+    : valor(valor), tipo(tipo)
+{
+}
+
 negocio::TokenPortugol::TokenPortugol(QString valor, enumeradores::EnumToken tipo, QString traducao)
     : valor(valor), tipo(tipo), traducao(traducao)
 {

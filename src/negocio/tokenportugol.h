@@ -11,7 +11,8 @@ namespace negocio
 class TokenPortugol
 {
 public:
-    TokenPortugol(QString valor, EnumToken tipo, QString traducao);
+    TokenPortugol(QString valor, EnumToken tipo);
+     TokenPortugol(QString valor, EnumToken tipo, QString traducao);
     void setValor(QString valor);
     void setTipo(EnumToken tipo);
     void setTraducao(QString traducao);

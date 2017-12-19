@@ -2,7 +2,7 @@
 #define TABELA_H
 #include "estado.h"
 #include <vector>
-
+#include "enumeradores/enumtoken.h"
 class Tabela{
 private:
     std::vector<Estado> table;
@@ -11,8 +11,10 @@ private:
 
 public:
     Tabela() {
-        Objeto *objeto = new Objeto("var", 0);
-        Objeto *real = new Objeto("real", 1);
+
+        Objeto *objeto = new Objeto("include", 0);
+        Objeto *real = new Objeto("int", 1);
+
         Objeto *inteiro = new Objeto("inteiro", 2);
         Objeto *caracter = new Objeto("caracter", 3);
         Estado *estado = new Estado();

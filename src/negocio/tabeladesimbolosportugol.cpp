@@ -4,7 +4,7 @@ negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
 {
     tabela =
     {
-        TokenPortugol(QString("programa"), EnumToken::PALAVRA_RESERVADA,""),
+        TokenPortugol(QString("programa"), EnumToken::PALAVRA_RESERVADA),
         TokenPortugol(QString("var"), EnumToken::VARIAVEL,""),
         TokenPortugol(QString("="), EnumToken::OPERADOR_ATRIBUICAO,""),
         TokenPortugol(QString(","), EnumToken::OPERADOR_SEPARADOR,""),
