@@ -8,7 +8,14 @@ negocio::AnalisadorSintaticoPortugol::AnalisadorSintaticoPortugol(TabelaDeSimbol
         { EnumToken::PALAVRA_RESERVADA },
         { EnumToken::VARIAVEL,EnumToken::NOME_VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NUMERO },
         { EnumToken::VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NUMERO },
-        { EnumToken::VARIAVEL,EnumToken::NOME_VARIAVEL}
+        { EnumToken::VARIAVEL,EnumToken::NOME_VARIAVEL},
+        { EnumToken::OPERADOR_LOGICO_SE,EnumToken::VARIAVEL,EnumToken::OPERADOR_RELACIONAL_MAIOR,EnumToken::VARIAVEL,EnumToken::OPERADOR_LOGICO_ENTAO},
+        { EnumToken::OPERADOR_LOGICO_SE,EnumToken::VARIAVEL,EnumToken::OPERADOR_RELACIONAL_MAIOR_IGUAL,EnumToken::VARIAVEL,EnumToken::OPERADOR_LOGICO_ENTAO},
+        { EnumToken::OPERADOR_LOGICO_SE,EnumToken::VARIAVEL,EnumToken::OPERADOR_RELACIONAL_MENOR,EnumToken::VARIAVEL,EnumToken::OPERADOR_LOGICO_ENTAO},
+        { EnumToken::OPERADOR_LOGICO_SE,EnumToken::VARIAVEL,EnumToken::OPERADOR_RELACIONAL_MENOR_IGUAL,EnumToken::VARIAVEL,EnumToken::OPERADOR_LOGICO_ENTAO},
+        { EnumToken::OPERADOR_LOGICO_SE,EnumToken::VARIAVEL,EnumToken::OPERADOR_RELACIONAL_DIFERENTE,EnumToken::VARIAVEL,EnumToken::OPERADOR_LOGICO_ENTAO},
+        { EnumToken::OPERADOR_LOGICO_SENAO},
+
     };
 }
 
