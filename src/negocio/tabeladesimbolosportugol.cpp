@@ -19,6 +19,7 @@ negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
         TokenPortugol(QString("<="), EnumToken::OPERADOR_RELACIONAL_MENOR_IGUAL,"<="),
         TokenPortugol(QString("!="), EnumToken::OPERADOR_RELACIONAL_DIFERENTE,"!="),
         TokenPortugol(QString("escreva"), EnumToken::ESCREVA,"printf("),
+        TokenPortugol(QString("leia"), EnumToken::LEIA,"scanf("),
         TokenPortugol(QString("("), EnumToken::ABRE,"("),
         TokenPortugol(QString(")"), EnumToken::FECHA,")"),
         TokenPortugol(QString("+"), EnumToken::OPERADOR_ARITMETICO_SOMA,"+"),
