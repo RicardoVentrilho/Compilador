@@ -12,11 +12,12 @@ negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
         TokenPortugol(QString("^([a-Z])([a-Z][0-9]$)*"), EnumToken::ID),
         TokenPortugol(QString("se"), EnumToken::OPERADOR_SE_LOGICO),
         TokenPortugol(QString("senao"), EnumToken::OPERADOR_SENAO_LOGICO),
-        TokenPortugol(QString("(>|<|>=|<=|!=)"), EnumToken::OPERADOR_ARITMETICO),
+        TokenPortugol(QString("(>|<|>=|<=|!=)"), EnumToken::OPERADOR_RELACIONAL),
         TokenPortugol(QString("leia"), EnumToken::OPERADOR_ARITMETICO),
         TokenPortugol(QString("escreva"), EnumToken::ESCREVA),
         TokenPortugol(QString("("), EnumToken::ABRE),
-        TokenPortugol(QString(")"), EnumToken::FECHA)
+        TokenPortugol(QString(")"), EnumToken::FECHA),
+        TokenPortugol(QString("(+|-)"), EnumToken::OPERADOR_ARITMETICO)
     };
 }
 
