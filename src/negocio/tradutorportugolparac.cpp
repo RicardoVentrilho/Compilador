@@ -38,18 +38,27 @@ void negocio::TradutorPortugolParaC::traduza()
         case EnumToken::DELIMITADOR:
             algoritmo.append(token->getTraducao());
             break;
+        case EnumToken::VARIAVEL:
+            algoritmo.append("int ");
+            break;
+        case EnumToken::NOME_VARIAVEL:
+            algoritmo.append(token->getValor());
+            break;
+        case EnumToken::OPERADOR_ATRIBUICAO:
+            algoritmo.append(token->getValor());
+            break;
         case EnumToken::FINAL_DE_LINHA:
         case EnumToken::NUMERO:
-        case EnumToken::OPERADOR_ATRIBUICAO:
+            algoritmo.append(token->getValor()).append(" ");
+            break;
         case EnumToken::OPERADOR_SEPARADOR:
         case EnumToken::ID:
             algoritmo.append(token->getValor());
             break;
-        case EnumToken::VARIAVEL:
-            algoritmo.append("int");
         }
     }
 
+//    algoritmo.append(";");
     tokensTraduzido = QString("#include <stdio.h>\n   int main() \n{\n%1}").arg(algoritmo);
 }
 

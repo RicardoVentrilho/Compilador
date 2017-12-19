@@ -6,8 +6,8 @@ negocio::AnalisadorSintaticoPortugol::AnalisadorSintaticoPortugol(TabelaDeSimbol
     regras =
     {
         { EnumToken::PALAVRA_RESERVADA },
-        { EnumToken::VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NUMERO },
         { EnumToken::VARIAVEL,EnumToken::NOME_VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NUMERO },
+        { EnumToken::VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NUMERO },
         { EnumToken::VARIAVEL,EnumToken::NOME_VARIAVEL}
     };
 }

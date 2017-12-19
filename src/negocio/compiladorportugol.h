@@ -15,6 +15,7 @@ class CompiladorPortugol
 public:
     CompiladorPortugol();
     void compile(QString texto);
+    void inicialize();
     QStringList separeLinhas(QString texto);
 
 private:
@@ -22,6 +23,7 @@ private:
     AnalisadorLexicoPortugol* analisadorLexico;
     AnalisadorSintaticoPortugol* analisadorSintatico;
     TradutorPortugolParaC* tradutor;
+
 };
 }
 
