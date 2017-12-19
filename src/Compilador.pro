@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     negocio/tabeladesimbolosportugol.cpp \
     negocio/tokenportugol.cpp \
     negocio/analisadorsintaticoportugol.cpp \
-    negocio/tradutorportugolparac.cpp
+    negocio/tradutorportugolparac.cpp \
+    negocio/regrasintatica.cpp
 
 HEADERS  += \
     tela/editordetextoview.h \
@@ -44,7 +45,8 @@ HEADERS  += \
     negocio/tabeladesimbolosportugol.h \
     negocio/tokenportugol.h \
     negocio/analisadorsintaticoportugol.h \
-    negocio/tradutorportugolparac.h
+    negocio/tradutorportugolparac.h \
+    negocio/regrasintatica.h
 
 RESOURCES += \
     recursos.qrc

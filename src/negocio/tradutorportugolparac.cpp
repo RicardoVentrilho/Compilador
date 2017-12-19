@@ -32,22 +32,22 @@ void negocio::TradutorPortugolParaC::traduza()
     QString algoritmo;
     for (auto token : *tokens)
     {
-        auto tipo = token->getTipo();
+//        auto tipo = token->getTipo();
 
-        if (tipo != EnumToken::NOME_VARIAVEL && tipo != EnumToken::NUMERO && tipo != EnumToken::MENSAGEM) {
-            algoritmo.append(token->getTraducao());
-            if (tipo == EnumToken::LEIA) {
-                cache = 1;
-            }
-        } else {
-            algoritmo.append(token->getValor().replace("$", ""));
-            if (cache) {
-                 algoritmo.append(")");
-                 cache = 0;
-            }
-            if (tipo == EnumToken::MENSAGEM) {
-                algoritmo.replace(token->getValor(), "\""+ token->getValor() + "\"");
-            }
+//        if (tipo != EnumToken::NOME_VARIAVEL && tipo != EnumToken::NUMERO && tipo != EnumToken::MENSAGEM) {
+//            algoritmo.append(token->getTraducao());
+//            if (tipo == EnumToken::LEIA) {
+//                cache = 1;
+//            }
+//        } else {
+//            algoritmo.append(token->getValor().replace("$", ""));
+//            if (cache) {
+//                 algoritmo.append(")");
+//                 cache = 0;
+//            }
+//            if (tipo == EnumToken::MENSAGEM) {
+//                algoritmo.replace(token->getValor(), "\""+ token->getValor() + "\"");
+//            }
 
     }
 

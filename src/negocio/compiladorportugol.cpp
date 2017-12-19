@@ -10,26 +10,12 @@ negocio::CompiladorPortugol::CompiladorPortugol()
 
 void negocio::CompiladorPortugol::compile(QString texto)
 {
-    auto linhas = separeLinhas(texto);
+    auto tokens = analisadorLexico->crieTokens(texto);
 
-    for (auto linha : linhas)
-    {
-        auto tokens = analisadorLexico->crieTokens(linha);
+    analisadorSintatico->valide(tokens);
 
-        if(tokens.size() == 0)
-        {
-            continue;
-        }
-
-        analisadorSintatico->valide(tokens);
-
-        //tradutor->adicioneTokens(tokens);
-        tradutor->adicioneTokenFinalDeLinha();
-    }
-
-
-    tradutor->traduza();
-    tradutor->imprima();
+    //tradutor->adicioneTokens(tokens);
+    //tradutor->adicioneTokenFinalDeLinha();
 }
 
 QStringList negocio::CompiladorPortugol::separeLinhas(QString texto)

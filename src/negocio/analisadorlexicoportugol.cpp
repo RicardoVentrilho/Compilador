@@ -5,12 +5,12 @@ negocio::AnalisadorLexicoPortugol::AnalisadorLexicoPortugol(TabelaDeSimbolosPort
 {
 }
 
-vector<negocio::TokenPortugol*> negocio::AnalisadorLexicoPortugol::crieTokens(QString linha)
+vector<negocio::TokenPortugol*> negocio::AnalisadorLexicoPortugol::crieTokens(QString sequenciaDeTokens)
 {
     vector<TokenPortugol*> tokens;
     QRegExp expressaoRegular("(\\ |\\n|\\t|\\;)");
 
-    auto palavras = linha.split(expressaoRegular);
+    auto palavras = sequenciaDeTokens.split(expressaoRegular);
 
     palavras = removaDelimitadores(palavras);
 

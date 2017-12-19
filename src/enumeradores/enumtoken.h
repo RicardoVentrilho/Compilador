@@ -31,7 +31,8 @@ enum EnumToken
     ESCREVA,
     ABRE,
     FECHA,
-    NOME_VARIAVEL
+    NOME_VARIAVEL,
+    FIM
 };
 
 }

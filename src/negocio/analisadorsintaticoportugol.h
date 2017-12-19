@@ -5,6 +5,7 @@
 #include <map>
 #include "tabeladesimbolosportugol.h"
 #include "tokenportugol.h"
+#include "regrasintatica.h"
 #include "infraestrutura/utilitarios/excecao.h"
 
 
@@ -22,7 +23,8 @@ public:
 
 private:
     bool valideRegraComSequenciaDeTokens(vector<EnumToken> regra, vector<EnumToken> tokens);
-    vector<vector<EnumToken>> regras;
+    RegraSintatica* regraInicial;
+    RegraSintatica* regraFinal;
     TabelaDeSimbolosPortugol* tabelaDeSimbolos;
 };
 }
