@@ -27,7 +27,6 @@ void negocio::TradutorPortugolParaC::traduza()
         throw new Excecao("Erro na tradução!");
     }
 
-    tokens->pop_back();
 
     QString algoritmo;
     for (auto token : *tokens)
@@ -39,27 +38,31 @@ void negocio::TradutorPortugolParaC::traduza()
             algoritmo.append(token->getTraducao());
             break;
         case EnumToken::VARIAVEL:
-            algoritmo.append("int ");
+            algoritmo.append(token->getTraducao()).append(" ");
             break;
         case EnumToken::NOME_VARIAVEL:
-            algoritmo.append(token->getValor());
+            algoritmo.append(token->getValor()).append(" ");
             break;
         case EnumToken::OPERADOR_ATRIBUICAO:
-            algoritmo.append(token->getValor());
+            algoritmo.append(token->getValor()).append(" ");
             break;
         case EnumToken::FINAL_DE_LINHA:
+            algoritmo.append(";\n");
+            break;
         case EnumToken::NUMERO:
             algoritmo.append(token->getValor()).append(" ");
             break;
         case EnumToken::OPERADOR_SEPARADOR:
+            algoritmo.append(token->getValor()).append(" ");
+            break;
         case EnumToken::ID:
-            algoritmo.append(token->getValor());
+            algoritmo.append(token->getValor()).append(" ");
             break;
         }
     }
 
 //    algoritmo.append(";");
-    tokensTraduzido = QString("#include <stdio.h>\n   int main() \n{\n%1}").arg(algoritmo);
+    tokensTraduzido = QString("#include <stdio.h>\n   int main() \n{\n%1\n}").arg(algoritmo);
 }
 
 void negocio::TradutorPortugolParaC::imprima()
