@@ -36,6 +36,7 @@ void negocio::TradutorPortugolParaC::traduza()
 
         switch (tipo) {
         case EnumToken::DELIMITADOR:
+            algoritmo.append(token->getTraducao());
             break;
         case EnumToken::FINAL_DE_LINHA:
         case EnumToken::NUMERO:
