@@ -21,7 +21,8 @@ enum EnumToken
     LEIA,
     ESCREVA,
     ABRE,
-    FECHA
+    FECHA,
+    NOME_VARIAVEL
 };
 
 }

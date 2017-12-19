@@ -9,7 +9,7 @@ negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
         TokenPortugol(QString("="), EnumToken::OPERADOR_ATRIBUICAO),
         TokenPortugol(QString(","), EnumToken::OPERADOR_SEPARADOR),
         TokenPortugol(QString("[0-9]{0,30}"), EnumToken::NUMERO),
-        TokenPortugol(QString("^([a-Z])([a-Z][0-9]$)*"), EnumToken::ID),
+        TokenPortugol(QString("^(_|[a-Z])([a-Z]|[0-9])*$"), EnumToken::NOME_VARIAVEL),
         TokenPortugol(QString("se"), EnumToken::OPERADOR_SE_LOGICO),
         TokenPortugol(QString("senao"), EnumToken::OPERADOR_SENAO_LOGICO),
         TokenPortugol(QString("(>|<|>=|<=|!=)"), EnumToken::OPERADOR_RELACIONAL),
@@ -17,7 +17,7 @@ negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
         TokenPortugol(QString("escreva"), EnumToken::ESCREVA),
         TokenPortugol(QString("("), EnumToken::ABRE),
         TokenPortugol(QString(")"), EnumToken::FECHA),
-        TokenPortugol(QString("(+|-)"), EnumToken::OPERADOR_ARITMETICO)
+        TokenPortugol(QString("(+|-|*)"), EnumToken::OPERADOR_ARITMETICO)
     };
 }
 
