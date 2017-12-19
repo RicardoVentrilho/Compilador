@@ -9,7 +9,7 @@ negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
         TokenPortugol(QString("="), EnumToken::OPERADOR_ATRIBUICAO,"="),
         TokenPortugol(QString(","), EnumToken::OPERADOR_SEPARADOR,","),
         TokenPortugol(QString("[0-9]{0,30}"), EnumToken::NUMERO,"numero"),
-        TokenPortugol(QString("^(_|[a-Z])([a-Z]|[0-9])*$"), EnumToken::NOME_VARIAVEL,"nome"),
+        TokenPortugol(QString("^[a-zA-Z]([a-zA-Z]|[0-9])*$"), EnumToken::NOME_VARIAVEL,"nome"),
         TokenPortugol(QString("se"), EnumToken::OPERADOR_LOGICO_SE,"if("),
         TokenPortugol(QString("entao"), EnumToken::OPERADOR_LOGICO_ENTAO,")"),
         TokenPortugol(QString("senao"), EnumToken::OPERADOR_LOGICO_SENAO,"else"),
@@ -39,6 +39,23 @@ enumeradores::EnumToken negocio::TabelaDeSimbolosPortugol::getTipo(QString palav
         if (ehValido)
         {
             return regra.getTipo();
+        }
+    }
+
+    throw new Excecao(QString("%1 incorreto.").arg(palavra).toStdString());
+}
+
+negocio::TokenPortugol negocio::TabelaDeSimbolosPortugol::getToken(QString palavra)
+{
+    for (auto regra : tabela)
+    {
+        QRegExp expressaoRegular(regra.getValor());
+
+        auto ehValido = expressaoRegular.exactMatch(palavra);
+
+        if (ehValido)
+        {
+            return regra;
         }
     }
 

@@ -16,8 +16,8 @@ vector<negocio::TokenPortugol*> negocio::AnalisadorLexicoPortugol::crieTokens(QS
 
     for (auto palavra : palavras)
     {
-        auto tipo = tabelaDeSimbolos->getTipo(palavra);
-        tokens.push_back(new TokenPortugol(palavra, tipo));
+        auto token = tabelaDeSimbolos->getToken(palavra);
+        tokens.push_back(new TokenPortugol(palavra, token.getTipo(),token.getTraducao()));
     }
 
     return tokens;

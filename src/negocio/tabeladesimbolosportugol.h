@@ -19,6 +19,7 @@ class TabelaDeSimbolosPortugol
 public:
     TabelaDeSimbolosPortugol();
     EnumToken getTipo(QString palavra);
+    TokenPortugol getToken(QString palavra);
 
 private:
     vector<TokenPortugol> tabela;
