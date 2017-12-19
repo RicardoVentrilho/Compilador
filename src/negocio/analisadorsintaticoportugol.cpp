@@ -7,8 +7,12 @@ negocio::AnalisadorSintaticoPortugol::AnalisadorSintaticoPortugol(TabelaDeSimbol
     {
         { EnumToken::PALAVRA_RESERVADA },
         { EnumToken::VARIAVEL,EnumToken::NOME_VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NUMERO },
-        { EnumToken::VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NUMERO },
-        { EnumToken::VARIAVEL,EnumToken::NOME_VARIAVEL},
+        { EnumToken::VARIAVEL,EnumToken::NOME_VARIAVEL, EnumToken::OPERADOR_SEPARADOR, EnumToken::NOME_VARIAVEL },
+        { EnumToken::LEIA,EnumToken::NOME_VARIAVEL},
+        { EnumToken::ESCREVA,EnumToken::ABRE,EnumToken::MENSAGEM,EnumToken::FECHA},
+        { EnumToken::AT, EnumToken::NOME_VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NOME_VARIAVEL},
+        { EnumToken::AT, EnumToken::NOME_VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NOME_VARIAVEL, EnumToken::OPERADOR_ARITMETICO_SOMA},
+        { EnumToken::AT, EnumToken::NOME_VARIAVEL, EnumToken::OPERADOR_ATRIBUICAO, EnumToken::NOME_VARIAVEL},
         { EnumToken::OPERADOR_LOGICO_SE,EnumToken::VARIAVEL,EnumToken::OPERADOR_RELACIONAL_MAIOR,EnumToken::VARIAVEL,EnumToken::OPERADOR_LOGICO_ENTAO},
         { EnumToken::OPERADOR_LOGICO_SE,EnumToken::VARIAVEL,EnumToken::OPERADOR_RELACIONAL_MAIOR_IGUAL,EnumToken::VARIAVEL,EnumToken::OPERADOR_LOGICO_ENTAO},
         { EnumToken::OPERADOR_LOGICO_SE,EnumToken::VARIAVEL,EnumToken::OPERADOR_RELACIONAL_MENOR,EnumToken::VARIAVEL,EnumToken::OPERADOR_LOGICO_ENTAO},
@@ -17,6 +21,7 @@ negocio::AnalisadorSintaticoPortugol::AnalisadorSintaticoPortugol(TabelaDeSimbol
         { EnumToken::OPERADOR_LOGICO_SENAO},
 
     };
+
 }
 
 void negocio::AnalisadorSintaticoPortugol::valide(vector<negocio::TokenPortugol *> tokens)

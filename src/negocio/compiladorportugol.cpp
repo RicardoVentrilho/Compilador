@@ -24,8 +24,8 @@ void negocio::CompiladorPortugol::compile(QString texto)
         analisadorSintatico->valide(tokens);
 
         tradutor->adicioneTokens(tokens);
-        tradutor->adicioneTokenFinalDeLinha();
     }
+    tradutor->adicioneTokenFinalDeLinha();
 
     tradutor->traduza();
     tradutor->imprima();
@@ -33,7 +33,7 @@ void negocio::CompiladorPortugol::compile(QString texto)
 
 QStringList negocio::CompiladorPortugol::separeLinhas(QString texto)
 {
-    QRegExp expressaoRegular("(\\;)");
+    QRegExp expressaoRegular("(\\;|\\n)");
 
     return texto.split(expressaoRegular);
 }

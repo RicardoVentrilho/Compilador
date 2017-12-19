@@ -4,13 +4,16 @@ negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
 {
     tabela =
     {
-        TokenPortugol(QString("programa"), EnumToken::PALAVRA_RESERVADA, "#include<stdio.h>_int main()_{_cleanCode_return 0;_}"),
-        TokenPortugol(QString("var"), EnumToken::VARIAVEL,"int"),
-        TokenPortugol(QString("="), EnumToken::OPERADOR_ATRIBUICAO,"="),
-        TokenPortugol(QString(","), EnumToken::OPERADOR_SEPARADOR,","),
+        TokenPortugol(QString("programa"), EnumToken::PALAVRA_RESERVADA, ""),
+        TokenPortugol(QString("var"), EnumToken::VARIAVEL,"int "),
+        TokenPortugol(QString(";"), EnumToken::FINAL_DE_LINHA,";"),
+        TokenPortugol(QString("="), EnumToken::OPERADOR_ATRIBUICAO," = "),
+        TokenPortugol(QString(","), EnumToken::OPERADOR_SEPARADOR,", "),
         TokenPortugol(QString("[0-9]{0,30}"), EnumToken::NUMERO,"numero"),
-        TokenPortugol(QString("^[a-zA-Z]([a-zA-Z]|[0-9])*$"), EnumToken::NOME_VARIAVEL,"nome"),
+        TokenPortugol(QString("^[a-zA-Z]([a-zA-Z]|[0-9])*\\$"), EnumToken::NOME_VARIAVEL,"nome"),
+        TokenPortugol(QString("^[a-zA-Z]([a-zA-Z]|[0-9])*"), EnumToken::MENSAGEM,"mensagem"),
         TokenPortugol(QString("se"), EnumToken::OPERADOR_LOGICO_SE,"if("),
+        TokenPortugol(QString("at"), EnumToken::AT,"at"),
         TokenPortugol(QString("entao"), EnumToken::OPERADOR_LOGICO_ENTAO,")"),
         TokenPortugol(QString("senao"), EnumToken::OPERADOR_LOGICO_SENAO,"else"),
         TokenPortugol(QString(">"), EnumToken::OPERADOR_RELACIONAL_MAIOR,">"),
@@ -22,9 +25,9 @@ negocio::TabelaDeSimbolosPortugol::TabelaDeSimbolosPortugol()
         TokenPortugol(QString("leia"), EnumToken::LEIA,"scanf("),
         TokenPortugol(QString("("), EnumToken::ABRE,"("),
         TokenPortugol(QString(")"), EnumToken::FECHA,")"),
-        TokenPortugol(QString("+"), EnumToken::OPERADOR_ARITMETICO_SOMA,"+"),
-        TokenPortugol(QString("-"), EnumToken::OPERADOR_ARITMETICO_SUBTRACAO,"-"),
-        TokenPortugol(QString("*"), EnumToken::OPERADOR_ARITMETICO_MULTIPLICACAO,"*")
+        TokenPortugol(QString("+"), EnumToken::OPERADOR_ARITMETICO_SOMA," + "),
+        TokenPortugol(QString("-"), EnumToken::OPERADOR_ARITMETICO_SUBTRACAO," - "),
+        TokenPortugol(QString("*"), EnumToken::OPERADOR_ARITMETICO_MULTIPLICACAO," * ")
     };
 }
 
