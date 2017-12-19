@@ -41,3 +41,4 @@ enumeradores::EnumToken negocio::TokenPortugol::getTipo()
 }
 
 
+
