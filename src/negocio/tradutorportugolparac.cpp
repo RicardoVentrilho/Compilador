@@ -21,6 +21,7 @@ void negocio::TradutorPortugolParaC::adicioneTokenFinalDeLinha()
 void negocio::TradutorPortugolParaC::traduza()
 {
     TokenPortugol* programa = tokens->front();
+    int cache = 0;
 
     if (programa->getTipo() != EnumToken::PALAVRA_RESERVADA)
     {
@@ -35,8 +36,15 @@ void negocio::TradutorPortugolParaC::traduza()
 
         if (tipo != EnumToken::NOME_VARIAVEL && tipo != EnumToken::NUMERO && tipo != EnumToken::MENSAGEM) {
             algoritmo.append(token->getTraducao());
+            if (tipo == EnumToken::LEIA) {
+                cache = 1;
+            }
         } else {
             algoritmo.append(token->getValor().replace("$", ""));
+            if (cache) {
+                 algoritmo.append(")");
+                 cache = 0;
+            }
         }
 
     }
