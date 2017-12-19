@@ -8,7 +8,7 @@ negocio::AnalisadorLexicoPortugol::AnalisadorLexicoPortugol(TabelaDeSimbolosPort
 vector<negocio::TokenPortugol*> negocio::AnalisadorLexicoPortugol::crieTokens(QString sequenciaDeTokens)
 {
     vector<TokenPortugol*> tokens;
-    QRegExp expressaoRegular("(\\ |\\n|\\t|\\;)");
+    QRegExp expressaoRegular("(\\ |\\n|\\t)");
 
     auto palavras = sequenciaDeTokens.split(expressaoRegular);
 

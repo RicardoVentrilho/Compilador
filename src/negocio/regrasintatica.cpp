@@ -3,6 +3,7 @@
 negocio::RegraSintatica::RegraSintatica(vector<EnumToken>* regra)
     : regraBasica(regra)
 {
+    ehParaAdicionarNaTabelaDeSimbolos = false;
 }
 
 void negocio::RegraSintatica::adicioneProximaRegra(RegraSintatica *regra)
@@ -10,7 +11,12 @@ void negocio::RegraSintatica::adicioneProximaRegra(RegraSintatica *regra)
     proximaRegra = regra;
 }
 
-void negocio::RegraSintatica::valide(vector<TokenPortugol*> tokens)
+void negocio::RegraSintatica::aoValidarTokenNomeVariavelAdicionarNaTabelaDeSimbolos()
+{
+    ehParaAdicionarNaTabelaDeSimbolos = true;
+}
+
+void negocio::RegraSintatica::valide(vector<TokenPortugol*> tokens, TabelaDeSimbolosPortugol *tabelaDeSimbolos)
 {
     auto contador = 0;
 
@@ -18,6 +24,19 @@ void negocio::RegraSintatica::valide(vector<TokenPortugol*> tokens)
             contador < tokens.size()) &&
             (*regraBasica)[contador] == tokens[contador]->getTipo())
     {
+        auto token = tokens[contador];
+
+        if(token->getTipo() == EnumToken::NOME_VARIAVEL && ehParaAdicionarNaTabelaDeSimbolos)
+        {
+            tabelaDeSimbolos->adicioneTokenId(token->getValor());
+        }
+
+        if(token->getTipo() == EnumToken::NOME_VARIAVEL)
+        {
+            ////Se token estiver na tabela de simbolos, se tornará a ser ID
+            *token = tabelaDeSimbolos->getToken(token->getValor());
+        }
+
         contador++;
     }
 
@@ -28,7 +47,7 @@ void negocio::RegraSintatica::valide(vector<TokenPortugol*> tokens)
 
         tokens = vector<TokenPortugol*>(inicio, fim);
 
-        proximaRegra->valide(tokens);
+        proximaRegra->valide(tokens, tabelaDeSimbolos);
 
         return;
     }
@@ -38,5 +57,7 @@ void negocio::RegraSintatica::valide(vector<TokenPortugol*> tokens)
         return;
     }
 
-    throw new Excecao("Erro sintático!");
+    auto mensagem = QString("Erro sintático: Esperado Id = %1").arg((*regraBasica)[contador]);
+
+    throw new Excecao(mensagem.toStdString());
 }

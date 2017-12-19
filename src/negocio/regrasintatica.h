@@ -5,6 +5,7 @@
 #include "enumeradores/enumtoken.h"
 #include "infraestrutura/utilitarios/excecao.h"
 #include "tokenportugol.h"
+#include "tabeladesimbolosportugol.h"
 
 using enumeradores::EnumToken;
 using std::vector;
@@ -17,10 +18,12 @@ class RegraSintatica
 public:
     RegraSintatica(vector<enumeradores::EnumToken> *regra);
     void adicioneProximaRegra(RegraSintatica* regra);
-    void valide(vector<TokenPortugol *> tokens);
+    void aoValidarTokenNomeVariavelAdicionarNaTabelaDeSimbolos();
+    void valide(vector<TokenPortugol *> tokens, TabelaDeSimbolosPortugol* tabelaDeSimbolos);
 
 private:
     vector<EnumToken> *regraBasica;
+    bool ehParaAdicionarNaTabelaDeSimbolos;
     RegraSintatica* proximaRegra;
 };
 }

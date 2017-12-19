@@ -58,9 +58,23 @@ negocio::TokenPortugol negocio::TabelaDeSimbolosPortugol::getToken(QString palav
 
         if (ehValido)
         {
-            return regra;
+            return TokenPortugol(palavra, regra.getTipo());
         }
     }
 
     throw new Excecao(QString("%1 incorreto.").arg(palavra).toStdString());
+}
+
+void negocio::TabelaDeSimbolosPortugol::atualize(negocio::TokenPortugol *token)
+{
+    auto valor = token->getValor();
+
+    *token = getToken(valor);
+}
+
+void negocio::TabelaDeSimbolosPortugol::adicioneTokenId(QString valor)
+{
+    TokenPortugol token(valor, EnumToken::ID);
+
+    tabela.push_front(token);
 }

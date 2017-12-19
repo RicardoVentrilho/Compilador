@@ -1,0 +1,6 @@
+programa
+var nome1$ nome2$ ;
+leia nome1$
+escreva ( alooooo )
+at nome1$ = 10
+fim

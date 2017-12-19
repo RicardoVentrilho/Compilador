@@ -32,7 +32,8 @@ enum EnumToken
     ABRE,
     FECHA,
     NOME_VARIAVEL,
-    FIM
+    FIM,
+    ID
 };
 
 }
