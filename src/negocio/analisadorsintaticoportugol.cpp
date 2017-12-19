@@ -19,7 +19,6 @@ negocio::AnalisadorSintaticoPortugol::AnalisadorSintaticoPortugol(TabelaDeSimbol
         { EnumToken::OPERADOR_LOGICO_SE,EnumToken::VARIAVEL,EnumToken::OPERADOR_RELACIONAL_MENOR_IGUAL,EnumToken::VARIAVEL,EnumToken::OPERADOR_LOGICO_ENTAO},
         { EnumToken::OPERADOR_LOGICO_SE,EnumToken::VARIAVEL,EnumToken::OPERADOR_RELACIONAL_DIFERENTE,EnumToken::VARIAVEL,EnumToken::OPERADOR_LOGICO_ENTAO},
         { EnumToken::OPERADOR_LOGICO_SENAO},
-
     };
 
 }

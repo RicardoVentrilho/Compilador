@@ -23,7 +23,7 @@ void negocio::CompiladorPortugol::compile(QString texto)
 
         analisadorSintatico->valide(tokens);
 
-        tradutor->adicioneTokens(tokens);
+        //tradutor->adicioneTokens(tokens);
         tradutor->adicioneTokenFinalDeLinha();
     }
 

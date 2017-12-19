@@ -5,7 +5,7 @@ negocio::TradutorPortugolParaC::TradutorPortugolParaC()
     tokens = new vector<TokenPortugol*>();
 }
 
-void negocio::TradutorPortugolParaC::adicioneTokens(vector<negocio::TokenPortugol *> tokens)
+void negocio::TradutorPortugolParaC::adicioneLinha(vector<negocio::TokenPortugol *> tokens)
 {
     this->tokens->reserve(this->tokens->size() + tokens.size());
     this->tokens->insert(this->tokens->end(), tokens.begin(), tokens.end());
@@ -33,22 +33,11 @@ void negocio::TradutorPortugolParaC::traduza()
     for (auto token : *tokens)
     {
         auto tipo = token->getTipo();
-
-        if (tipo != EnumToken::NOME_VARIAVEL && tipo != EnumToken::NUMERO && tipo != EnumToken::MENSAGEM) {
-            algoritmo.append(token->getTraducao());
-            if (tipo == EnumToken::LEIA) {
-                cache = 1;
-            }
-        } else {
-            algoritmo.append(token->getValor().replace("$", ""));
-            if (cache) {
-                 algoritmo.append(")");
-                 cache = 0;
-            }
+        {
+            cache = 1;
         }
 
     }
-
 
     tokensTraduzido = QString("#include <stdio.h>\nint main() {\n%1}").arg(algoritmo);
 }

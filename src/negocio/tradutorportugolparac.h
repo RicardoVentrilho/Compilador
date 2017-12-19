@@ -19,7 +19,7 @@ class TradutorPortugolParaC
 {
 public:
     TradutorPortugolParaC();
-    void adicioneTokens(vector<TokenPortugol*> tokens);
+    void adicioneLinha(vector<TokenPortugol*> linhas);
     void adicioneTokenFinalDeLinha();
     void traduza();
     void imprima();
